@@ -24,7 +24,7 @@ const { MongoClient } = require("mongodb");
  
 // Replace the following with your Atlas connection string                                                                                                                                        
 
-const url = "mongodb+srv://boyuan:123456qwer@ironhack-book-app-2cofe.mongodb.net/test?retryWrites=true&w=majority";
+const url = "mongodb+srv://boyuan:123456qwer@ironhack-book-app-2cofe.mongodb.net/book-app?retryWrites=true&w=majority";
 
 const client = new MongoClient(url);
 
