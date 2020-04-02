@@ -5,6 +5,11 @@ const userSchema = new Schema({
     password:{type:String},
     favorites:[{type:String}],
     wishList:[{type:String}],
+    role: {
+        type:String,
+        enum:['GUEST','ADMIN'],
+        default:'GUEST',
+    },
     reviews:[{ type: Schema.Types.ObjectId, ref: 'Review' }],
     timestamps:true,
 });
