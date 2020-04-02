@@ -28,3 +28,5 @@ passport.use(
             .catch(e=>console.error(e));
     })
 );
+
+module.exports = passport

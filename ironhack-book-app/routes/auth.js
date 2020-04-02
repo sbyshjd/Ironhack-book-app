@@ -1,5 +1,6 @@
 const express = require('express');
 const router  = express.Router();
+const password = require('passport')
 
 //GET sign-up route
 router.get('/sign-up',(req,res,next)=> {
