@@ -9,7 +9,7 @@ const mongoose     = require('mongoose');
 const logger       = require('morgan');
 const path         = require('path');
 const session      = requure('express-session');
-const passport     = require('./routes/passport');
+const passport     = require('./auth/passport');
 
 
 mongoose
@@ -31,6 +31,9 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+// Middleware passport setup. required from './auth/passport'
+app.use(passport.initialize())
+app.use(passport.session())
 
 // Express View engine setup
 
