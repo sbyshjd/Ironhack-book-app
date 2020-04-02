@@ -4,8 +4,8 @@ const reviewSchema = new Schema({
     content:{type:String},
     creator:{ type: Schema.Types.ObjectId, ref: 'User' },
     book:String,
-    timestamps:true,
-});
+    
+},{timestamps:true});
 
 const Review = mongoose.model('User',reviewSchema);
 

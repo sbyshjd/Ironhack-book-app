@@ -11,8 +11,8 @@ const userSchema = new Schema({
         default:'GUEST',
     },
     reviews:[{ type: Schema.Types.ObjectId, ref: 'Review' }],
-    timestamps:true,
-});
+    
+}, {timestamps:true});
 
 const User = mongoose.model('User',userSchema);
 
