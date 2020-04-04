@@ -12,36 +12,36 @@ const session      = require('express-session');
 const passport     = require('./auth/passport');
 
 
-// mongoose
-//   .connect('mongodb://localhost/ironhack-book-app', {useNewUrlParser: true})
-//   .then(x => {
-//     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
-//   })
-//   .catch(err => {
-//     console.error('Error connecting to mongo', err)
-//   });
-const { MongoClient } = require("mongodb");
+mongoose
+  .connect('mongodb+srv://boyuan:123456qwer@ironhack-book-app-2cofe.mongodb.net/book-app?retryWrites=true&w=majority', {useNewUrlParser: true})
+  .then(x => {
+    console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
+  })
+  .catch(err => {
+    console.error('Error connecting to mongo', err)
+  });
+// const { MongoClient } = require("mongodb");
  
 // Replace the following with your Atlas connection string                                                                                                                                        
 
-const url = "mongodb+srv://boyuan:123456qwer@ironhack-book-app-2cofe.mongodb.net/book-app?retryWrites=true&w=majority";
+// const url = "mongodb+srv://boyuan:123456qwer@ironhack-book-app-2cofe.mongodb.net/book-app?retryWrites=true&w=majority";
 
-const client = new MongoClient(url);
+// const client = new MongoClient(url);
 
-async function run() {
-    try {
-        await client.connect();
-        console.log("Connected correctly to server");
+// async function run() {
+//     try {
+//         await client.connect();
+//         console.log("Connected correctly to server");
 
-    } catch (err) {
-        console.log(err.stack);
-    }
-    finally {
-        await client.close();
-    }
-}
+//     } catch (err) {
+//         console.log(err.stack);
+//     }
+//     finally {
+//         await client.close();
+//     }
+// }
 
-run().catch(console.dir);
+// run().catch(console.dir);
 
 const app_name = require('./package.json').name;
 const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.')[0]}`);
@@ -54,8 +54,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 // Middleware passport setup. required from './auth/passport'
-app.use(passport.initialize())
-app.use(passport.session())
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Express View engine setup
 

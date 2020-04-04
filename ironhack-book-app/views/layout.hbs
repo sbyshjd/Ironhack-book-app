@@ -11,28 +11,31 @@
 </head>
 <body>
     {{!-- Logo, login, signup and search area --}}
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="row">
-        <a class="navbar-brand" href="#">Bookje</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav">
-            <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
-            <a class="nav-item nav-link" href="#">login</a>
-            <a class="nav-item nav-link" href="#">signup</a>
-          </div>
-        </div>
+  <nav>
+    <header>
+      <div class="logo">
+        <img src="/images/Group 1.jpg" alt="">
+        <h1>Bookje</h1>
       </div>
-        <div class="row">
-          <form class="form-inline">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-          </form>
-        </div>
+      <div class="menu">
+        <a href="/sign-in">login</a>
+        <a href="/sign-up">signup</a>
       </div>
-    </nav>
+    </header>
+    <div class="search-area">
+      <div class="search-container">
+        <div class="search-logo">
+          <img src="/images/search-icon.jpg" alt="">
+        </div>
+        <div class="search-input">
+          <input type="text">
+        </div>
+        {{!-- <div class="search-button">
+          <button type="submit">Search</button>
+        </div> --}}
+      </div>
+    </div>
+  </nav>
  
  
    
