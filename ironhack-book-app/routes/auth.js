@@ -35,8 +35,30 @@ router.post('/sign-up',(req,res,next)=> {
 router.get('/log-in',(req,res,next)=> {
     res.render('../views/auth/log-in.hbs');
 })
-//use passport to check the sign in and role.
-
+//POST use passport to check the sign in and role.
+router.post('/log-in',
+    passport.authenticate('local',{
+        successRedirect:'/',
+        failureRedirect:'/log-in',
+        failureFlash:true,
+        passReqToCallback:true
+    })
+);
+//GET lon in page for google account.
+router.get('/auth/google',
+    passport.authenticate('google',{scope:['https://www.googleapis.com/auth/userinfo.profile']})
+)
+router.get('/auth/google/callback',
+    passport.authenticate('google',{
+        successRedirect:'/',
+        failureRedirect:'/log-in'
+    })
+)
+//GET log-out page for
+router.get('/log-out', (req,res)=> {
+    req.logout();
+    res.redirect('/');
+})
 
 
 
