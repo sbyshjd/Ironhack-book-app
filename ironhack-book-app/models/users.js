@@ -3,12 +3,13 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
     username:{type:String, required:true, unique:true},
     password:{type:String},
+    profileImage:{type:String},
     favorites:[{type:String}],
     wishList:[{type:String}],
     role: {
         type:String,
-        enum:['GUEST','ADMIN'],
-        default:'GUEST',
+        enum:['USER','ADMIN'],
+        default:'USER',
     },
     reviews:[{ type: Schema.Types.ObjectId, ref: 'Review' }],
     

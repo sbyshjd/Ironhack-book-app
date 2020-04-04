@@ -9,4 +9,4 @@ const checkRoles = role => {
     }
   }
   
-  module.exports = checkRoles
+  module.exports = checkRoles;

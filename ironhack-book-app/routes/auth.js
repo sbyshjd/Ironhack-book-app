@@ -16,3 +16,8 @@ router.get('/sign-in',(req,res,next)=> {
 
 })
 //use passport to check the sign in and role.
+
+
+
+
+module.exports = router;
