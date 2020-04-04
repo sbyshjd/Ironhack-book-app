@@ -25,7 +25,8 @@ router.post('/sign-up',(req,res,next)=> {
             User.create({username:username,password:hash,role:'USER'})
                 .then(res.redirect('/'))
         })
-        .catch(e=>console.error(e));
+        .catch(e=>console.error(e))
+    )
 })
 
 //GET sign-in route
