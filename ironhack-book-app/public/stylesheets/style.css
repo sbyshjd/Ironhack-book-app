@@ -1,8 +1,16 @@
 body {
+<<<<<<< HEAD
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; }
 
 a {
   color: #00B7FF; }
+=======
+  padding: 0px;
+  margin: 0px; }
+
+.navbar {
+  font-family: 'Libre Baskerville', serif; }
+>>>>>>> b56b2e22647e7a8d9f00b36cf2516b87094fa2f0
 
 /*# sourceMappingURL=style.css.map */
