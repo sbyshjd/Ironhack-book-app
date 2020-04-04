@@ -1,10 +1,10 @@
 const checkRoles = role => {
     return (req, res, next) => {
-      console.log(req.user)
-      if(req.isAuthenticated() && req.user.role === role) {
-        next()
+      console.log(req.user);
+      if(req.isAuthenticated() && role.includes(req.user.role)) {
+        next();
       } else {
-        res.redirect()  //still have to determine redirect page
+        res.redirect('/log-in');
       }
     }
   }

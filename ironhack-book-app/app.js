@@ -53,6 +53,14 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+// set up the session middleware for passport log-in
+app.use(
+    session({
+      secret: 'our-passport-local-strategy-app',
+      resave: true,
+      saveUninitialized: true
+    })
+  );
 // Middleware passport setup. required from './auth/passport'
 app.use(passport.initialize());
 app.use(passport.session());
