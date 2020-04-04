@@ -15,7 +15,7 @@ router.post('/sign-up',(req,res,next)=> {
         res.render('../views/auth/sign-up.hbs',{message:'Indicate the username and password'});
         return;
     }
-    User.findOne({username:username})
+    User.findOne({username:username}
         .then(user => {
             if(user !==null) {
                 res.render('../views/auth/sign-up.hbs',{message:'The username already exists!'});
