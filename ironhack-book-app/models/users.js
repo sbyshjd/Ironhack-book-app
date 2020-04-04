@@ -4,6 +4,7 @@ const userSchema = new Schema({
     username:{type:String, required:true, unique:true},
     password:{type:String},
     profileImage:{type:String},
+    googleID:{type:String},
     favorites:[{type:String}],
     wishList:[{type:String}],
     role: {
@@ -12,7 +13,6 @@ const userSchema = new Schema({
         default:'USER',
     },
     reviews:[{ type: Schema.Types.ObjectId, ref: 'Review' }],
-    
 }, {timestamps:true});
 
 const User = mongoose.model('User',userSchema);
