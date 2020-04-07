@@ -1,14 +1,16 @@
 const mongoose = require('mongoose');
 const User = require('../models/users')
+const bcrypt = require('bcrypt');
+const hashPassword = bcrypt.hashSync('password',10);
 
 const admins = [
     {
         username:'michiel',
-        password:'password1',
+        password:hashPassword,
         role: 'ADMIN'
     },{
         username:'Boyuan',
-        password:'password2',
+        password:hashPassword,
         role: 'ADMIN'
     }
 ]
