@@ -17,9 +17,16 @@
         <img src="/images/Group 1.jpg" alt="">
         <h1>Bookje</h1>
       </div>
-      <div class="menu">
+      <div class="menu"></div>
+      {{#unless isLogged}}
         <a href="/log-in">login</a>
-        <a href="/sign-up">signup</a>      
+        <a href="/sign-up">signup</a> 
+      {{/unless}}
+      {{#if isLogged}}
+        <p>Hi, {{user.username}}</p>
+        <a href="">Your Page</a>
+        <a href="/log-out">log out</a> 
+      {{/if}}     
       </div>
     </header>
     <div class="search-area">

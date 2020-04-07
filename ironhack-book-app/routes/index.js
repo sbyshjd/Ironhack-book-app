@@ -3,9 +3,9 @@ const router  = express.Router();
 
 /* GET home page */
 router.get('/', (req, res, next) => {
-  let user = req.user;
-  console.log(user);
-  res.render('../views/index.hbs',user);
+  let isLogged = req.isAuthenticated();
+  console.log(req.isAuthenticated());
+  res.render('../views/index.hbs',{isLogged:isLogged,user:req.user});
 });
 
 module.exports = router;

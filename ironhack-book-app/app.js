@@ -13,7 +13,7 @@ const passport     = require('./auth/passport');
 
 
 mongoose
-  .connect('mongodb+srv://boyuan:123456qwer@ironhack-book-app-2cofe.mongodb.net/book-app?retryWrites=true&w=majority', {useNewUrlParser: true})
+  .connect(process.env.MONGODB, {useNewUrlParser: true})
   .then(x => {
     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
   })
