@@ -90,6 +90,8 @@ const index = require('./routes/index');
 app.use('/', index);
 const auth = require('./routes/auth');
 app.use('/',auth);
+const searchBar = require('./routes/searchbar')
+app.use('/', searchBar)
 
 
 module.exports = app;
