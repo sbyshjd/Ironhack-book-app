@@ -15,7 +15,7 @@ router.post('/sign-up',(req,res,next)=> {
         res.render('../views/auth/sign-up.hbs',{message:'Indicate the username and password'});
         return;
     }
-    User.findOne({username:username}
+    User.findOne({username:username})
         .then(user => {
             if(user !==null) {
                 res.render('../views/auth/sign-up.hbs',{message:'The username already exists!'});
@@ -26,10 +26,9 @@ router.post('/sign-up',(req,res,next)=> {
                 .then(res.redirect('/'))
         })
         .catch(e=>console.error(e))
-    )
 })
 
-//GET sign-in route
+//GET log-in route
 router.get('/log-in',(req,res,next)=> {
     res.render('../views/auth/log-in.hbs');
 })
@@ -38,8 +37,8 @@ router.post('/log-in',
     passport.authenticate('local',{
         successRedirect:'/',
         failureRedirect:'/log-in',
-        failureFlash:true,
-        passReqToCallback:true
+        // failureFlash:true,
+        // passReqToCallback:true
     })
 );
 //GET lon in page for google account.
