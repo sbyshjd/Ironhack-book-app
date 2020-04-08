@@ -1,0 +1,10 @@
+<h2>Edit your Profile</h2>
+<form action="/home/edit/{{user._id}}" method="post" enctype="multipart/form-data">
+  <label>Username</label>
+  <input type="text" name="username" value="{{user.username}}">
+
+  <label>Profile Image</label>
+  <input type="file" name="photo">
+
+  <input type="submit" value="SAVE">
+</form>
