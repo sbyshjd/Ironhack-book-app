@@ -39,7 +39,7 @@ header {
   border-bottom: 4px solid #a9a9a9;
 }
 
-.search-container {
+.search-container form{
   display: flex;
   justify-content: center;
   align-items: center;
@@ -67,12 +67,13 @@ header {
   outline: none;
 }
 
-// .search-button button{
-//   padding-right: 10px;
-//   background:none;
-//   border:none;
-//   font-size:1em;
-//   background-color: lightsalmon;
-//   height: 45px;
-//   width: 130px;
-// }
+.search-button button{
+  padding-right: 10px;
+  background:none;
+  border:none;
+  font-size:1em;
+  background-color: lightsalmon;
+  height: 45px;
+  width: 130px;
+  border-left: 1px solid black;
+}
