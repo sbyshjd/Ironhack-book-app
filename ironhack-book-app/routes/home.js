@@ -13,8 +13,26 @@ router.get('/home',checkRoles(['USER','ADMIN']),(req,res,next)=> {
     if(req.isAuthenticated()) {
       layout = 'layout-login';
     }
-    res.render('../views/private/home.hbs',{layout:layout,user:req.user})
+    User.find({username: {$ne:req.user.username}}).then(users => {
+        res.render('../views/private/home.hbs',{layout:layout,user:req.user,otherUsers:users});
+    })  
 })
+//GET show the friend page
+router.get('/friend/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
+   //use the right layout
+   let layout = 'layout';
+   if(req.isAuthenticated()) {
+     layout = 'layout-login';
+   }
+   User.findOne({_id:req.params.id})
+    .then(friend => {
+        res.render('../views/private/friend.hbs',{layout:layout,user:req.user,friend:friend})
+    })    
+})
+
+
+
+
 //GET the profile edit page
 router.get('/home/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
     //use the right layout
@@ -30,11 +48,33 @@ router.get('/home/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
 //POST the profile info back to database
 router.post('/home/edit/:id',checkRoles(['USER','ADMIN']),uploadCloud.single('photo'),(req,res,next)=> {
     const userName = req.body.username;
-    const profileImage = req.file.url;
+    const profileImage = req.file.url;  
     User.updateOne({_id:req.params.id},{ $set: {username:userName,profileImage:profileImage}})
         .then(()=> {
             res.redirect('/home')
         })
 })
+
+//GET the password page
+router.get('/password/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
+    //use the right layout
+    let layout = 'layout';
+    if(req.isAuthenticated()) {
+        layout = 'layout-login';
+    }
+    res.render('../views/private/password.hbs',{layout:layout,user:req.user})
+})
+//POST the password info
+router.post('/password/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
+    const {password} = req.body;
+    const hashPass = bcrypt.hashSync(password,10);
+    // console.log(password);
+    User.updateOne({_id:req.params.id},{ $set: {password:hashPass}})
+        .then(()=>{
+            res.redirect('/home')
+        })   
+        .catch(e=>console.error(e)); 
+})
+
 module.exports = router;
 

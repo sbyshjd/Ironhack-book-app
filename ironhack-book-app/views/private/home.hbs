@@ -9,6 +9,9 @@
 </div>
 <div>
     <h3>Friends</h3>
+    {{#each otherUsers}}
+    <a href="/friend/{{this._id}}">{{this.username}}</a>
+    {{/each}}
 </div>
 <div>
     <h3>Comments</h3>
