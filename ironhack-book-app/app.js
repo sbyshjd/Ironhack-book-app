@@ -90,10 +90,13 @@ const index = require('./routes/index');
 app.use('/', index);
 const auth = require('./routes/auth');
 app.use('/',auth);
-const searchBar = require('./routes/searchbar');
-app.use('/', searchBar);
+const searchBar = require('./routes/searchbar')
+app.use('/', searchBar)
+const user = require('./routes/user')
+app.use('/user', user)
 const home = require('./routes/home');
 app.use('/',home);
+
 
 
 module.exports = app;
