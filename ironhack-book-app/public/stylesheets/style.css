@@ -66,4 +66,14 @@ header {
 .home-page img {
   width: 300px; }
 
+.index {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 200px;
+  margin-right: 200px; }
+
+.index img {
+  width: 200px; }
+
 /*# sourceMappingURL=style.css.map */
