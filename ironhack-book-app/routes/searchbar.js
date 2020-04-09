@@ -5,7 +5,10 @@ const User          = require('../models/users');
 const checkroles    = require('../auth/checkroles')
 
 searchRouter.post('/search-results',(req, res, next) => {
-  console.log(req.body.searchinput)
+  let layout = 'layout';
+  if(req.isAuthenticated()) {
+    layout = 'layout-login';
+  }
   const searchInput = req.body.searchinput
   const isLogged = req.isAuthenticated()
   axios.get(`https://www.googleapis.com/books/v1/volumes?q=${searchInput}&key=AIzaSyAMNHv1Hf_DoGzNa4RSTRzDJjM2QEE6uvs`)
@@ -13,7 +16,7 @@ searchRouter.post('/search-results',(req, res, next) => {
     //console.log(response.data.items[0].volumeInfo)
     const books = response.data.items
     books.map(book => book.islogged = isLogged)
-    res.render('searchresults', {books})
+    res.render('searchresults', {books:books,layout:layout,user:req.user})
     })
   .catch(e => console.log(e))
 })
