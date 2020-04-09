@@ -1,10 +1,11 @@
-const express = require('express');
-const router  = express.Router();
-const passport = require('passport');
-const bcrypt   = require('bcrypt');
-const User     = require('../models/users');
-const checkRoles = require('../auth/checkroles');
+const express     = require('express');
+const router      = express.Router();
+const passport    = require('passport');
+const bcrypt      = require('bcrypt');
+const User        = require('../models/users');
+const checkRoles  = require('../auth/checkroles');
 const uploadCloud = require('../config/cloudinary');
+const axios       = require('axios')
 
 //GET show the profile page
 router.get('/home',checkRoles(['USER','ADMIN']),(req,res,next)=> {
@@ -13,10 +14,20 @@ router.get('/home',checkRoles(['USER','ADMIN']),(req,res,next)=> {
     if(req.isAuthenticated()) {
       layout = 'layout-login';
     }
-    User.find({username: {$ne:req.user.username}}).then(users => {
-        res.render('../views/private/home.hbs',{layout:layout,user:req.user,otherUsers:users});
+    User.find({username: {$ne:req.user.username}})
+        .then(users => {
+        const books = req.user.favorites.map(id => {
+            return axios.get(`https://www.googleapis.com/books/v1/volumes/${id}?key=AIzaSyAMNHv1Hf_DoGzNa4RSTRzDJjM2QEE6uvs`)
+            .then(book => book.data.volumeInfo)
+        })
+        Promise.all(books)
+        .then(results => {
+            res.render('private/home.hbs',{layout:layout,user:req.user,otherUsers:users,books:results});
+        });
     })  
 })
+
+
 //GET show the friend page
 router.get('/friend/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
    //use the right layout
@@ -75,6 +86,7 @@ router.post('/password/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
         })   
         .catch(e=>console.error(e)); 
 })
+
 
 module.exports = router;
 
