@@ -2,12 +2,12 @@
     <h3>Your Profile</h3>
     <img src={{user.profileImage}} alt="your profile image">
     <p>Your username:{{user.username}}</p>
-    <p>Your role {{user.role}}</p>
+    <p>Your role is: {{user.role}}</p>
 </div>
 <div>
     <h3>Favorite books</h3>
     {{#each books}}
-    {{title}}
+    {{this.title}}
     {{/each}}
 </div>
 <div>

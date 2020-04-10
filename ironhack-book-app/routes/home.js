@@ -10,34 +10,43 @@ const axios       = require('axios')
 //GET show the profile page
 router.get('/home',checkRoles(['USER','ADMIN']),(req,res,next)=> {
    //use the right layout
+    let user = null;
     let layout = 'layout';
     if(req.isAuthenticated()) {
       layout = 'layout-login';
+      user = JSON.parse(JSON.stringify(req.user))
     }
-    User.find({username: {$ne:req.user.username}})
-        .then(users => {
-        const books = req.user.favorites.map(id => {
-            return axios.get(`https://www.googleapis.com/books/v1/volumes/${id}?key=AIzaSyAMNHv1Hf_DoGzNa4RSTRzDJjM2QEE6uvs`)
-            .then(book => book.data.volumeInfo)
-        })
-        Promise.all(books)
-        .then(results => {
-            res.render('private/home.hbs',{layout:layout,user:req.user,otherUsers:users,books:results});
-        });
+    const otherUsers = User.find({username: {$ne:req.user.username}});
+    const books = req.user.favorites.map(id => {
+         return axios.get(`https://www.googleapis.com/books/v1/volumes/${id}?key=AIzaSyAMNHv1Hf_DoGzNa4RSTRzDJjM2QEE6uvs`)
+        .then(book => book.data.volumeInfo)
+        .catch(e=>console.log(e));
     })  
+    Promise.all([otherUsers,...books])
+        .then(results => {
+            // const others =results[0];
+            const others = JSON.parse(JSON.stringify(results[0]))
+            results.shift();
+            // res.send(others);
+            res.render('private/home.hbs',{layout:layout,user:user,otherUsers:others,books:results});
+        });
+    
 })
 
 
 //GET show the friend page
 router.get('/friend/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
    //use the right layout
+   let user = null;
    let layout = 'layout';
    if(req.isAuthenticated()) {
      layout = 'layout-login';
+     user = JSON.parse(JSON.stringify(req.user))
    }
    User.findOne({_id:req.params.id})
     .then(friend => {
-        res.render('../views/private/friend.hbs',{layout:layout,user:req.user,friend:friend})
+        const other = JSON.parse(JSON.stringify(friend));
+        res.render('../views/private/friend.hbs',{layout:layout,user:user,friend:other})
     })    
 })
 
@@ -47,10 +56,13 @@ router.get('/friend/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
 //GET the profile edit page
 router.get('/home/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
     //use the right layout
+    let user = null;
     let layout = 'layout';
     if(req.isAuthenticated()) {
         layout = 'layout-login';
+        user = JSON.parse(JSON.stringify(req.user))
     }
+    
     User.findOne({_id:req.params.id})
         .then(user => {
             res.render('../views/private/home-edit.hbs',{layout:layout,user:user})
@@ -69,11 +81,13 @@ router.post('/home/edit/:id',checkRoles(['USER','ADMIN']),uploadCloud.single('ph
 //GET the password page
 router.get('/password/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
     //use the right layout
+    let user = null;
     let layout = 'layout';
     if(req.isAuthenticated()) {
         layout = 'layout-login';
+        user = JSON.parse(JSON.stringify(req.user))
     }
-    res.render('../views/private/password.hbs',{layout:layout,user:req.user})
+    res.render('../views/private/password.hbs',{layout:layout,user:user})
 })
 //POST the password info
 router.post('/password/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
