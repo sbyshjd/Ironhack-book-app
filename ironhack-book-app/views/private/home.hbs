@@ -18,6 +18,10 @@
 </div>
 <div>
     <h3>Comments</h3>
+    {{#each comments}}
+    {{content}}
+    @ <a href="/search-results/{{bookID}}">{{bookTitle}}</a> 
+    {{/each}}
 </div>
 <div>
     <a href="/home/{{user._id}}">Edit my profile</a> <a href="/password/{{user._id}}">Change my password</a>

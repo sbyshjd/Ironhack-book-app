@@ -70,9 +70,13 @@ searchRouter.post('/comment/:id',checkroles(['USER','ADMIN']),(req,res,next)=> {
   }
   const creator = req.user._id;
   const bookID = req.params.id;
-  Review.create({content:content,creator:creator,bookID:bookID})
-    .then(()=>res.redirect(`/search-results/${req.params.id}`))
-    .catch(e=>console.error(e));
+  axios.get(`https://www.googleapis.com/books/v1/volumes/${bookID}?&key=AIzaSyAMNHv1Hf_DoGzNa4RSTRzDJjM2QEE6uvs`)
+      .then(result => { 
+        const bookTitle = result.data.volumeInfo.title
+         Review.create({content:content,creator:creator,bookID:bookID,bookTitle:bookTitle})
+          .then(()=>res.redirect(`/search-results/${req.params.id}`))
+          .catch(e=>console.error(e));} )
+
 })
 
 
