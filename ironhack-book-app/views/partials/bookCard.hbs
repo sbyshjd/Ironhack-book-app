@@ -1,7 +1,9 @@
-<div>
+<div class="col-md-4" id="book-card">
     <img src="{{volumeInfo.imageLinks.thumbnail}}" alt="the cover image of book">
-    <h3>{{volumeInfo.title}}</h3>
-    <h5>{{volumeInfo.authors}}</h5>
-    <a href="/search-results/{{this.id}}"> More Info</a>
+    <h5>{{volumeInfo.title}}</h5>
+    <p>Authors:{{volumeInfo.authors}}</p>
+    <button>
+        <a href="/search-results/{{this.id}}"> More Info</a>
+    </button>
     {{!-- {{#if islogged}}<a href="/search-results/{{id}}">add book</a>{{/if}} --}}
 </div>

@@ -23,21 +23,21 @@
         <a href="/log-out">log out</a>     
       </div>
     </header>
-    <div class="search-area">
-      <div class="search-container">
-        <form action="/search-results" method="POST">
-          <div class="search-logo">
-            <img src="/images/search-icon.jpg" alt="">
+        <div class="search-area">
+          <div class="search-container container-fluid">
+              <form action="/search-results" method="POST" class="row justify-content-center">
+                <div class="search-logo col-1">
+                  <img src="/images/search-icon.jpg" alt="">
+                </div>
+                <div class="search-input col-6">
+                  <input type="text" name="searchinput">
+                </div>
+                <div class="search-button col-2">
+                  <button type="submit">Search</button>
+                </div>
+              </form>
           </div>
-          <div class="search-input">
-            <input type="text" name="searchinput">
-          </div>
-          <div class="search-button">
-            <button type="submit">Search</button>
-          </div>
-        </form>
-      </div>
-    </div>
+        </div>
   </nav>
  
   {{{body}}}
