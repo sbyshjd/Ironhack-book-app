@@ -3,6 +3,7 @@ const router      = express.Router();
 const passport    = require('passport');
 const bcrypt      = require('bcrypt');
 const User        = require('../models/users');
+const Review      = require('../models/review');
 const checkRoles  = require('../auth/checkroles');
 const uploadCloud = require('../config/cloudinary');
 const axios       = require('axios')
@@ -21,18 +22,17 @@ router.get('/home',checkRoles(['USER','ADMIN']),(req,res,next)=> {
          return axios.get(`https://www.googleapis.com/books/v1/volumes/${id}?key=AIzaSyAMNHv1Hf_DoGzNa4RSTRzDJjM2QEE6uvs`)
         .then(book => book.data.volumeInfo)
         .catch(e=>console.log(e));
-    })  
-    Promise.all([otherUsers,...books])
+    }) 
+    const comments = Review.find({creator:user._id})
+    Promise.all([otherUsers,comments,...books])
         .then(results => {
-            // const others =results[0];
-            const others = JSON.parse(JSON.stringify(results[0]))
-            results.shift();
-            // res.send(others);
-            res.render('private/home.hbs',{layout:layout,user:user,otherUsers:others,books:results});
+            const others = JSON.parse(JSON.stringify(results[0]));
+            const comments = JSON.parse(JSON.stringify(results[1]));
+            results.splice(0,2);
+            res.render('private/home.hbs',{layout:layout,user:user,otherUsers:others,comments:comments,books:results});
         });
     
 })
-
 
 //GET show the friend page
 router.get('/friend/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
@@ -49,8 +49,6 @@ router.get('/friend/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
         res.render('../views/private/friend.hbs',{layout:layout,user:user,friend:other})
     })    
 })
-
-
 
 
 //GET the profile edit page

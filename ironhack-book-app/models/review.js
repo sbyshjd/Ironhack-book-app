@@ -4,6 +4,7 @@ const reviewSchema = new Schema({
     content:{type:String},
     creator:{ type: Schema.Types.ObjectId, ref: 'User' },
     bookID:{type:String},
+    bookTitle:{type:String},
     
 },{timestamps:true});
 
