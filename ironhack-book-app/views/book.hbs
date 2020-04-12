@@ -1,0 +1,17 @@
+<div>
+    <div><img src={{book.volumeInfo.imageLinks.thumbnail}} alt="the cover image"></div>
+    <h2>{{book.volumeInfo.title}}</h2>
+    <h5>Authors:{{book.volumeInfo.authors}}</h5>
+    <h5>Categories:{{book.volumeInfo.categories}}</h5>
+    <h5>Language:{{book.volumeInfo.language}}</h5>
+    <p>Description:{{book.volumeInfo.description}}</p>
+    <p>Comments from Bookjes's user:</p>
+    {{#if user}}
+    <a href="">Add to my favorites</a> 
+    <form action="/book/{{book.id}}" method="post">
+    <label for="comment">Comment for the book</label>
+    <input type="text" name="comment" id="comment">
+    <button type="submit">Save</button>
+    </form>
+    {{/if}}
+</div>
