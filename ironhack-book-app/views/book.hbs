@@ -4,13 +4,26 @@
     <h5>Authors:{{book.volumeInfo.authors}}</h5>
     <h5>Categories:{{book.volumeInfo.categories}}</h5>
     <h5>Language:{{book.volumeInfo.language}}</h5>
+    {{#if book.volumeInfo.description}}
     <p>Description:{{book.volumeInfo.description}}</p>
+    {{else}}
+    <p>Description:no description of the book</p>
+    {{/if}}
     <p>Comments from Bookjes's user:</p>
+    {{#each comments}}
+    {{this.content}}
+    --{{this.creator.username}}
+    {{/each}}
     {{#if user}}
-    <a href="">Add to my favorites</a> 
-    <form action="/book/{{book.id}}" method="post">
+    {{#if isAdded}}
+    <p>Added to your favorites</p>
+    {{/if}}
+    {{#unless isAdded}}
+    <a href="/book/{{book.id}}">Add to my favorites</a> 
+    {{/unless}}
+    <form action="/comment/{{book.id}}" method="post">
     <label for="comment">Comment for the book</label>
-    <input type="text" name="comment" id="comment">
+    <input type="text" name="content" id="comment">
     <button type="submit">Save</button>
     </form>
     {{/if}}
