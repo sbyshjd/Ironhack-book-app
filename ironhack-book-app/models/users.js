@@ -5,7 +5,7 @@ const userSchema = new Schema({
     password:{type:String},
     profileImage:{type:String,default:'/images/default-profile-picture.png'},
     googleID:{type:String},
-    friends:{type:String},
+    friends:[{type:String}],
     favorites:[{type:String}],
     wishList:[{type:String}],
     role: {

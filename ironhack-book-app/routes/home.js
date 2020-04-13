@@ -17,6 +17,8 @@ router.get('/home',checkRoles(['USER','ADMIN']),(req,res,next)=> {
       layout = 'layout-login';
       user = JSON.parse(JSON.stringify(req.user))
     }
+    const friends = User.find({friends: req.user.friends})
+    console.log(friends)
     const otherUsers = User.find({username: {$ne:req.user.username}});
     const books = req.user.favorites.map(id => {
          return axios.get(`https://www.googleapis.com/books/v1/volumes/${id}?key=AIzaSyAMNHv1Hf_DoGzNa4RSTRzDJjM2QEE6uvs`)
@@ -40,26 +42,37 @@ router.get('/favorites/delete/:id',checkRoles(['USER','ADMIN']),(req,res,next)=>
         .then(res.redirect('/home'))
         .catch(e => console.error(e));
 })
-//GET delete my comment 
+ 
 router.get('/comments/delete/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
     Review.deleteOne({_id:req.params.id})
         .then(res.redirect('/home'))
         .catch(e=>console.error(e));
 })
 
+
 //POST search user and show profile page of user.
 router.post('/profile', checkRoles(['USER','ADMIN']), (req, res, next) => {
+    let user = null;
+    let layout = 'layout';
+    if(req.isAuthenticated()) {
+     layout = 'layout-login';
+     user = JSON.parse(JSON.stringify(req.user))
+    }
     User.find({username: req.body.username})
     .then(user => {
-        console.log(user)
-        res.render('profile', user[0])
+        const profile = JSON.parse(JSON.stringify(user[0]))
+        res.render('profile', {user:user, layout:layout, profile:profile})
     })
+    .catch(e => console.log(e))
 })
 
-router.post('/profile/:id', checkRoles(['USER','ADMIN']), (req, res, next) => {
-    User.updateOne({_id: req.user._id},{$push:{friends:req.params.id}})
+//POST add user to User schema
+router.get('/add/:id', checkRoles(['USER','ADMIN']), (req, res, next) => {
+    User.updateOne({_id:req.user._id},{$push:{friends:req.params.id}})
     .then(() => res.redirect('/home'))
+    .catch(e => console.log(e))
 })
+
 
 //GET show the friend page
 router.get('/friend/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
@@ -98,7 +111,7 @@ router.get('/home/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
 router.post('/home/edit/:id',checkRoles(['USER','ADMIN']),uploadCloud.single('photo'),(req,res,next)=> {
     const userName = req.body.username;
     const profileImage = req.file.url;  
-    User.updateOne({_id:req.params.id},{ $set: {username:userName,profileImage:profileImage}})
+    User.updateOne({_id:req.params.id},{$set: {username:userName,profileImage:profileImage}})
         .then(()=> {
             res.redirect('/home')
         })
