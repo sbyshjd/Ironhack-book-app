@@ -20,12 +20,13 @@ router.get('/home',checkRoles(['USER','ADMIN']),(req,res,next)=> {
     const otherUsers = User.find({username: {$ne:req.user.username}});
     const books = req.user.favorites.map(id => {
          return axios.get(`https://www.googleapis.com/books/v1/volumes/${id}?key=AIzaSyAMNHv1Hf_DoGzNa4RSTRzDJjM2QEE6uvs`)
-        .then(book => book.data.volumeInfo)
+        .then(book => book.data)
         .catch(e=>console.log(e));
     }) 
     const comments = Review.find({creator:user._id})
     Promise.all([otherUsers,comments,...books])
         .then(results => {
+            console.log(results[2])
             const others = JSON.parse(JSON.stringify(results[0]));
             const comments = JSON.parse(JSON.stringify(results[1]));
             results.splice(0,2);

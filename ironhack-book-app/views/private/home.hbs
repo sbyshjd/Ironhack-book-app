@@ -6,14 +6,21 @@
 </div>
 <div>
     <h3>Favorite books</h3>
+    <div class="container-fluid">
+    <div class="row justify-content-center">
     {{#each books}}
-    {{this.title}}
+    <div class="col-md-3" id="book-card">
+    <a href="/search-results/{{this.id}}">{{this.volumeInfo.title}}</a>
+    <img src="{{this.volumeInfo.imageLinks.thumbnail}}" alt="">
+    </div>
     {{/each}}
+    </div>
+    </div>
 </div>
 <div>
     <h3>Friends</h3>
     {{#each otherUsers}}
-    <a href="/friend/{{this._id}}">{{this.username}}</a>
+    <a href="/friend/:{{this.id}}">{{this.username}}</a>
     {{/each}}
 </div>
 <div>
