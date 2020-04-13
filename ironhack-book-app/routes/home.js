@@ -42,6 +42,13 @@ router.get('/favorites/delete/:id',checkRoles(['USER','ADMIN']),(req,res,next)=>
         .then(res.redirect('/home'))
         .catch(e => console.error(e));
 })
+ 
+router.get('/comments/delete/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
+    Review.deleteOne({_id:req.params.id})
+        .then(res.redirect('/home'))
+        .catch(e=>console.error(e));
+})
+
 
 //POST search user and show profile page of user.
 router.post('/profile', checkRoles(['USER','ADMIN']), (req, res, next) => {
@@ -65,7 +72,6 @@ router.get('/add/:id', checkRoles(['USER','ADMIN']), (req, res, next) => {
     .then(() => res.redirect('/home'))
     .catch(e => console.log(e))
 })
-
 
 
 //GET show the friend page

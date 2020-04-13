@@ -1,4 +1,5 @@
-<div>
+<div class="container-fluid">
+    <div class="row">
     <div><img src={{book.volumeInfo.imageLinks.thumbnail}} alt="the cover image"></div>
     <h2>{{book.volumeInfo.title}}</h2>
     <h5>Authors:{{book.volumeInfo.authors}}</h5>
@@ -8,16 +9,22 @@
     <p>Description:{{book.volumeInfo.description}}</p>
     {{else}}
     <p>Description:no description of the book</p>
+    <p><a href="{{book.volumeInfo.previewLink}}">See the book in Google books</a></p>
     {{/if}}
     <p>Comments from Bookjes's user:</p>
     {{#each comments}}
-    <img id="small-image" src="{{this.creator.profileImage}}" alt="">
-    {{this.creator.username}}--
-    {{this.content}}
+    <div>
+        <img id="small-image" src="{{this.creator.profileImage}}" alt="">
+        {{this.creator.username}}--
+        {{this.content}}
+        {{#if this.isUser}}
+        <a href="/search-results/comments/delete/{{this._id}}">delete</a>
+        {{/if}}
+    </div>
     {{/each}}
     {{#if user}}
     {{#if isAdded}}
-    <p>Added to your favorites</p>
+    <p>Already in the favorites</p>
     {{/if}}
     {{#unless isAdded}}
     <a href="/book/{{book.id}}">Add to my favorites</a> 
@@ -28,4 +35,5 @@
     <button type="submit">Save</button>
     </form>
     {{/if}}
+    </div>
 </div>
