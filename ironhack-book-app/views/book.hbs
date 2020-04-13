@@ -11,8 +11,9 @@
     {{/if}}
     <p>Comments from Bookjes's user:</p>
     {{#each comments}}
+    <img id="small-image" src="{{this.creator.profileImage}}" alt="">
+    {{this.creator.username}}--
     {{this.content}}
-    --{{this.creator.username}}
     {{/each}}
     {{#if user}}
     {{#if isAdded}}

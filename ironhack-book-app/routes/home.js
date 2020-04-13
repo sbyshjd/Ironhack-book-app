@@ -24,16 +24,16 @@ router.get('/home',checkRoles(['USER','ADMIN']),(req,res,next)=> {
         .catch(e=>console.log(e));
     }) 
     const comments = Review.find({creator:user._id})
-    Promise.all([otherUsers,comments,...books])
+    Promise.all([otherUsers, comments, ...books])
         .then(results => {
-            console.log(results[2])
             const others = JSON.parse(JSON.stringify(results[0]));
             const comments = JSON.parse(JSON.stringify(results[1]));
             results.splice(0,2);
-            res.render('private/home.hbs',{layout:layout,user:user,otherUsers:others,comments:comments,books:results});
+            res.render('private/home.hbs',{layout:layout, user:user, otherUsers:others, comments:comments, books:results}); // otherUsers:others
         });
     
 })
+<<<<<<< HEAD
 //GET delete one book from my favorites
 router.get('/favorites/delete/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
     const bookID = req.params.id;
@@ -41,6 +41,23 @@ router.get('/favorites/delete/:id',checkRoles(['USER','ADMIN']),(req,res,next)=>
         .then(res.redirect('/home'))
         .catch(e => console.error(e));
 })
+=======
+
+//POST search user and show profile page of user.
+router.post('/profile', checkRoles(['USER','ADMIN']), (req, res, next) => {
+    User.find({username: req.body.username})
+    .then(user => {
+        console.log(user)
+        res.render('profile', user[0])
+    })
+})
+
+router.post('/profile/:id', checkRoles(['USER','ADMIN']), (req, res, next) => {
+    User.updateOne({_id: req.user._id},{$push:{friends:req.params.id}})
+    .then(() => res.redirect('/home'))
+})
+
+>>>>>>> 540441de5489506f7b472246a74f0a2889b851fe
 //GET show the friend page
 router.get('/friend/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
    //use the right layout
@@ -53,8 +70,9 @@ router.get('/friend/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
    User.findOne({_id:req.params.id})
     .then(friend => {
         const other = JSON.parse(JSON.stringify(friend));
-        res.render('../views/private/friend.hbs',{layout:layout,user:user,friend:other})
-    })    
+        res.render('private/friend.hbs',{layout:layout,user:user,friend:other})
+    })
+    .catch(e => console.log(e))    
 })
 
 
@@ -70,7 +88,7 @@ router.get('/home/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
     
     User.findOne({_id:req.params.id})
         .then(user => {
-            res.render('../views/private/home-edit.hbs',{layout:layout,user:user})
+            res.render('private/home-edit.hbs', {layout:layout,user:user})
         })
 })
 //POST the profile info back to database
