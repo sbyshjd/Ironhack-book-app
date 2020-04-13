@@ -45,10 +45,16 @@ router.get('/favorites/delete/:id',checkRoles(['USER','ADMIN']),(req,res,next)=>
 
 //POST search user and show profile page of user.
 router.post('/profile', checkRoles(['USER','ADMIN']), (req, res, next) => {
+    let user = null;
+    let layout = 'layout';
+    if(req.isAuthenticated()) {
+     layout = 'layout-login';
+     user = JSON.parse(JSON.stringify(req.user))
+    }
     User.find({username: req.body.username})
     .then(user => {
-        console.log(user)
-        res.render('profile', user[0])
+        const profile = JSON.parse(JSON.stringify(user[0]))
+        res.render('profile', {user:user, layout:layout, profile:profile})
     })
 })
 //POST add user to User schema
