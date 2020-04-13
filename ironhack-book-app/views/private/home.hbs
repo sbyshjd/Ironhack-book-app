@@ -17,12 +17,31 @@
     </div>
     </div>
 </div>
+
+
+
 <div>
     <h3>Friends</h3>
-    {{#each otherUsers}}
-    <a href="/friend/:{{this.id}}">{{this.username}}</a>
-    {{/each}}
+    <form action="/profile" method="post">
+      <input type="text" list="usernames" name="username"> 
+      <datalist id="usernames">
+        {{#each otherUsers}}
+        <option value="{{username}}">
+        {{/each}}
+      </datalist>
+      <input type="submit" value="search">
+    </form>
+
+
+
+    {{!-- {{#each otherUsers}}
+    <a href="/friend/{{this._id}}">{{this.username}}</a>
+    {{/each}} --}}
 </div>
+
+
+
+
 <div>
     <h3>Comments</h3>
     {{#each comments}}
