@@ -113,5 +113,21 @@ header {
 }
 
 #small-image {
-  height: 100px;
+  height: 50px;
+}
+.book-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.comment-section {
+  margin-top: 30px;
+}
+.comment-form input {
+  display: block;
+  width: 100%;
+  height: 300px;
+}
+.add-section {
+  margin-top: 50px;
 }
