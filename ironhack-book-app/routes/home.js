@@ -17,6 +17,8 @@ router.get('/home',checkRoles(['USER','ADMIN']),(req,res,next)=> {
       layout = 'layout-login';
       user = JSON.parse(JSON.stringify(req.user))
     }
+    const friends = User.find({friends: req.user.friends})
+    console.log(friends)
     const otherUsers = User.find({username: {$ne:req.user.username}});
     const books = req.user.favorites.map(id => {
          return axios.get(`https://www.googleapis.com/books/v1/volumes/${id}?key=AIzaSyAMNHv1Hf_DoGzNa4RSTRzDJjM2QEE6uvs`)
@@ -42,8 +44,8 @@ router.post('/profile', checkRoles(['USER','ADMIN']), (req, res, next) => {
         res.render('profile', user[0])
     })
 })
-
-router.post('/profile/:id', checkRoles(['USER','ADMIN']), (req, res, next) => {
+//POST add user to User schema
+router.get('/profile/:id', checkRoles(['USER','ADMIN']), (req, res, next) => {
     User.updateOne({_id: req.user._id},{$push:{friends:req.params.id}})
     .then(() => res.redirect('/home'))
 })
