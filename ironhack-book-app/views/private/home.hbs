@@ -12,7 +12,7 @@
     <div class="col-md-3" id="book-card">
     <img src="{{this.volumeInfo.imageLinks.thumbnail}}" alt="">
     <a href="/search-results/{{this.id}}">{{this.volumeInfo.title}}</a>
-    <a href="/favorites/delete/{{this.id}}">Delete from my favorites</a>
+    <a href="/favorites/delete/{{this.id}}">Remove</a>
     </div>
     {{/each}}
     </div>
@@ -46,8 +46,12 @@
 <div>
     <h3>Comments</h3>
     {{#each comments}}
-    {{content}}
-    @ <a href="/search-results/{{bookID}}">{{bookTitle}}</a> 
+    <div>
+        {{content}}
+        <p>@ for the book: <a href="/search-results/{{bookID}}">{{bookTitle}}</a></p>
+        <a href="/comments/delete/{{this._id}}">Delete</a>
+    </div>
+
     {{/each}}
 </div>
 <div>

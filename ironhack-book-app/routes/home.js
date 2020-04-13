@@ -33,7 +33,6 @@ router.get('/home',checkRoles(['USER','ADMIN']),(req,res,next)=> {
         });
     
 })
-<<<<<<< HEAD
 //GET delete one book from my favorites
 router.get('/favorites/delete/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
     const bookID = req.params.id;
@@ -41,7 +40,12 @@ router.get('/favorites/delete/:id',checkRoles(['USER','ADMIN']),(req,res,next)=>
         .then(res.redirect('/home'))
         .catch(e => console.error(e));
 })
-=======
+//GET delete my comment 
+router.get('/comments/delete/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
+    Review.deleteOne({_id:req.params.id})
+        .then(res.redirect('/home'))
+        .catch(e=>console.error(e));
+})
 
 //POST search user and show profile page of user.
 router.post('/profile', checkRoles(['USER','ADMIN']), (req, res, next) => {
@@ -57,7 +61,6 @@ router.post('/profile/:id', checkRoles(['USER','ADMIN']), (req, res, next) => {
     .then(() => res.redirect('/home'))
 })
 
->>>>>>> 540441de5489506f7b472246a74f0a2889b851fe
 //GET show the friend page
 router.get('/friend/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
    //use the right layout
