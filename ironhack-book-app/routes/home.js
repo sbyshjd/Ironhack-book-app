@@ -56,12 +56,17 @@ router.post('/profile', checkRoles(['USER','ADMIN']), (req, res, next) => {
         const profile = JSON.parse(JSON.stringify(user[0]))
         res.render('profile', {user:user, layout:layout, profile:profile})
     })
+    .catch(e => console.log(e))
 })
+
 //POST add user to User schema
-router.get('/profile/:id', checkRoles(['USER','ADMIN']), (req, res, next) => {
-    User.updateOne({_id: req.user._id},{$push:{friends:req.params.id}})
+router.get('/add/:id', checkRoles(['USER','ADMIN']), (req, res, next) => {
+    User.updateOne({_id:req.user._id},{$push:{friends:req.params.id}})
     .then(() => res.redirect('/home'))
+    .catch(e => console.log(e))
 })
+
+
 
 //GET show the friend page
 router.get('/friend/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
@@ -100,7 +105,7 @@ router.get('/home/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
 router.post('/home/edit/:id',checkRoles(['USER','ADMIN']),uploadCloud.single('photo'),(req,res,next)=> {
     const userName = req.body.username;
     const profileImage = req.file.url;  
-    User.updateOne({_id:req.params.id},{ $set: {username:userName,profileImage:profileImage}})
+    User.updateOne({_id:req.params.id},{$set: {username:userName,profileImage:profileImage}})
         .then(()=> {
             res.redirect('/home')
         })
