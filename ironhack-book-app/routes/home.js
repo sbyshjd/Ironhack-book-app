@@ -35,6 +35,13 @@ router.get('/home',checkRoles(['USER','ADMIN']),(req,res,next)=> {
         });
     
 })
+//GET delete one book from my favorites
+router.get('/favorites/delete/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
+    const bookID = req.params.id;
+    User.updateOne({_id:req.user._id},{$pull:{favorites:bookID}})
+        .then(res.redirect('/home'))
+        .catch(e => console.error(e));
+})
 
 //POST search user and show profile page of user.
 router.post('/profile', checkRoles(['USER','ADMIN']), (req, res, next) => {
