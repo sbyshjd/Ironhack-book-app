@@ -32,6 +32,12 @@
       </datalist>
       <input type="submit" value="search">
     </form>
+    <div id="friends">
+        {{#each friends}}
+            <a href="/profile/{{_id}}"><img id="small-image" src="{{profileImage}}" alt=""></a>
+            <a href="/profile/{{_id}}">{{username}}</a>
+        {{/each}}
+    </div>
     {{!-- {{#each otherUsers}}
     <a href="/friend/{{this._id}}">{{this.username}}</a>
     {{/each}} --}}
