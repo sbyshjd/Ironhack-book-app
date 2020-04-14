@@ -17,21 +17,22 @@ router.get('/home',checkRoles(['USER','ADMIN']),(req,res,next)=> {
       layout = 'layout-login';
       user = JSON.parse(JSON.stringify(req.user))
     }
-    const friends = User.find({friends: req.user.friends})
-    console.log(friends)
-    const otherUsers = User.find({username: {$ne:req.user.username}});
+    const friends = User.findOne({_id:req.user._id})
+                    .populate('friends')
+                    .then(user => user.friends)
+    
     const books = req.user.favorites.map(id => {
          return axios.get(`https://www.googleapis.com/books/v1/volumes/${id}?key=AIzaSyAMNHv1Hf_DoGzNa4RSTRzDJjM2QEE6uvs`)
         .then(book => book.data)
         .catch(e=>console.log(e));
     }) 
     const comments = Review.find({creator:user._id})
-    Promise.all([otherUsers, comments, ...books])
+    Promise.all([friends, comments, ...books])
         .then(results => {
-            const others = JSON.parse(JSON.stringify(results[0]));
+            const friends = JSON.parse(JSON.stringify(results[0]));
             const comments = JSON.parse(JSON.stringify(results[1]));
             results.splice(0,2);
-            res.render('private/home.hbs',{layout:layout, user:user, otherUsers:others, comments:comments, books:results}); // otherUsers:others
+            res.render('private/home.hbs',{layout:layout, user:user, friends:friends, comments:comments, books:results}); // otherUsers:others
         });
     
 })
@@ -61,12 +62,12 @@ router.post('/profile', checkRoles(['USER','ADMIN']), (req, res, next) => {
     User.find({username: req.body.username})
     .then(user => {
         const profile = JSON.parse(JSON.stringify(user[0]))
-        res.render('profile', {user:user, layout:layout, profile:profile})
+        res.render('private/profile', {user:user, layout:layout, profile:profile})
     })
     .catch(e => console.log(e))
 })
 
-//POST add user to User schema
+//GET add user to User schema
 router.get('/add/:id', checkRoles(['USER','ADMIN']), (req, res, next) => {
     User.updateOne({_id:req.user._id},{$push:{friends:req.params.id}})
     .then(() => res.redirect('/home'))
@@ -74,19 +75,27 @@ router.get('/add/:id', checkRoles(['USER','ADMIN']), (req, res, next) => {
 })
 
 
-//GET show the friend page
-router.get('/friend/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
+
+//GET show the profile page
+router.get('/profile/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
    //use the right layout
    let user = null;
    let layout = 'layout';
+   let isFriend = false;
    if(req.isAuthenticated()) {
      layout = 'layout-login';
      user = JSON.parse(JSON.stringify(req.user))
    }
    User.findOne({_id:req.params.id})
-    .then(friend => {
-        const other = JSON.parse(JSON.stringify(friend));
-        res.render('private/friend.hbs',{layout:layout,user:user,friend:other})
+    .populate('reviews')
+    .then(result => {
+        const friend = JSON.parse(JSON.stringify(result));
+        const comments = JSON.parse(JSON.stringify(result.reviews));
+        console.log(comments);
+        if (req.user.friends.includes(result._id)) {
+            isFriend = true;
+        }
+        res.render('private/profile',{layout:layout, user:user, profile:friend, isFriend:isFriend, comments:comments})
     })
     .catch(e => console.log(e))    
 })

@@ -97,9 +97,15 @@ searchRouter.post('/comment/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
       .then(result => { 
         const bookTitle = result.data.volumeInfo.title
          Review.create({content:content,creator:creator,bookID:bookID,bookTitle:bookTitle})
-          .then(()=>res.redirect(`/search-results/${req.params.id}`))
-          .catch(e=>console.error(e));} )
-
+          .then(review => {
+            User.updateOne({_id:req.user._id},{$push: {reviews:review._id}})
+            .then(() => {
+              res.redirect(`/search-results/${req.params.id}`);
+            })
+          })
+          .catch(e=>console.error(e))
+        })
+  
 })
 
 
