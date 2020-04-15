@@ -123,10 +123,11 @@ header {
 .comment-section {
   margin-top: 30px;
 }
-.comment-form input {
+.comment-form #comment {
   display: block;
   width: 100%;
   height: 300px;
+  color: grey;
 }
 .add-section {
   margin-top: 50px;

@@ -32,7 +32,7 @@
             {{#if user}}
             <form action="/comment/{{book.id}}" method="post" class="comment-form">
             <label for="comment">Leave a comment for the book:</label>
-            <input type="text" name="content" id="comment">
+            <textarea cols="50" rows="4" name="content" id="comment">put your comment here</textarea>
             <button type="submit">Save</button>
             </form>
             
