@@ -18,23 +18,17 @@
         <h1><a href="/">Bookje</a></h1> 
       </div>
       <div class="menu"></div>
-        <p>Hi, {{user.username}}</p>
+       <h5>Hi, {{user.username}}</h5>
         <a href="/home">Your Page</a>
         <a href="/log-out">log out</a>     
       </div>
     </header>
         <div class="search-area">
-          <div class="search-container container-fluid">
-              <form action="/search-results" method="POST" class="row justify-content-center">
-                <div class="search-logo col-1">
-                  <img src="/images/search-icon.jpg" alt="">
-                </div>
-                <div class="search-input col-6">
-                  <input type="text" name="searchinput">
-                </div>
-                <div class="search-button col-2">
-                  <button type="submit">Search</button>
-                </div>
+          <div class="search-container">
+              <form action="/search-results" method="POST">
+                  <img id="search-logo" src="/images/search-icon.jpg" alt="">
+                  <input id="search-input" type="text" name="searchinput">
+                  <button id="search-button" type="submit">Search</button>
               </form>
           </div>
         </div>

@@ -20,6 +20,8 @@ router.get('/home',checkRoles(['USER','ADMIN']),(req,res,next)=> {
     const friends = User.findOne({_id:req.user._id})
                     .populate('friends')
                     .then(user => user.friends)
+
+    const otherUsers = User.find({_id:{$ne:req.user._id}})
     
     const books = req.user.favorites.map(id => {
          return axios.get(`https://www.googleapis.com/books/v1/volumes/${id}?key=AIzaSyAMNHv1Hf_DoGzNa4RSTRzDJjM2QEE6uvs`)
@@ -27,12 +29,13 @@ router.get('/home',checkRoles(['USER','ADMIN']),(req,res,next)=> {
         .catch(e=>console.log(e));
     }) 
     const comments = Review.find({creator:user._id})
-    Promise.all([friends, comments, ...books])
+    Promise.all([friends, comments, otherUsers, ...books])
         .then(results => {
             const friends = JSON.parse(JSON.stringify(results[0]));
             const comments = JSON.parse(JSON.stringify(results[1]));
-            results.splice(0,2);
-            res.render('private/home.hbs',{layout:layout, user:user, friends:friends, comments:comments, books:results}); // otherUsers:others
+            const others = JSON.parse(JSON.stringify(results[2]));
+            results.splice(0,3);
+            res.render('private/home.hbs',{layout:layout, user:user, friends:friends, otherUsers:others, comments:comments, books:results}); // otherUsers:others
         });
     
 })
@@ -67,13 +70,19 @@ router.post('/profile', checkRoles(['USER','ADMIN']), (req, res, next) => {
     .catch(e => console.log(e))
 })
 
-//GET add user to User schema
+//GET add friend to user
 router.get('/add/:id', checkRoles(['USER','ADMIN']), (req, res, next) => {
     User.updateOne({_id:req.user._id},{$push:{friends:req.params.id}})
     .then(() => res.redirect('/home'))
     .catch(e => console.log(e))
 })
 
+//GET delete friend from user page
+router.get('/delete/:id', checkRoles(['USER','ADMIN']), (req, res, next) => {
+    User.updateOne({_id:req.user._id},{$pull:{friends:req.params.id}})
+    .then(() => res.redirect('/home'))
+    .catch(e => console.log(e))
+})
 
 
 //GET show the profile page
