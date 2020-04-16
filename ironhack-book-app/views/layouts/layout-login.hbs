@@ -19,7 +19,11 @@
       </div>
       <div class="menu"></div>
         <p>Hi, {{user.username}}</p>
+        {{#if isADMIN}}
+        <a href="/admin">Admin Page</a>
+        {{else}}
         <a href="/home">Your Page</a>
+        {{/if}}
         <a href="/log-out">log out</a>     
       </div>
     </header>

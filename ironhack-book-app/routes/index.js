@@ -7,11 +7,14 @@ router.get('/', (req, res, next) => {
   //set the layout for visitor or user 
   let user = null;
   let layout = 'layout';
+  let isADMIN = false;
   if(req.isAuthenticated()) {
     layout = 'layout-login';
     user = JSON.parse(JSON.stringify(req.user));
+    if(req.user.role === 'ADMIN') {
+      isADMIN = true;
+    }
   }
-  
   //get the random book for recommendation
   let char = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let randomLetter = char.charAt(Math.floor(Math.random()*62));
@@ -27,7 +30,7 @@ router.get('/', (req, res, next) => {
       let randomNum = Math.floor(Math.random()*recommendationBooks.length);
       const randomBook = recommendationBooks[randomNum];
       // console.log(randomBook.volumeInfo);
-      res.render('../views/index.hbs',{layout:layout,user:user,book:randomBook.volumeInfo})
+      res.render('../views/index.hbs',{layout:layout,user:user,book:randomBook.volumeInfo,isADMIN})
     })
   ;
 });
