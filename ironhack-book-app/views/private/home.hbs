@@ -1,13 +1,12 @@
 <div class="home-page">
-    <h3>Your Profile</h3>
+    <h3>Hi {{user.username}}!</h3>
     <img src={{user.profileImage}} alt="your profile image">
-    <p>Your username:{{user.username}}</p>
     <p>Your role is: {{user.role}}</p>
 </div>
 <div>
     <h3>Favorite books</h3>
     <div class="container-fluid">
-    <div class="row justify-content-center">
+    <div class="row justify-content-start">
     {{#each books}}
     <div class="col-md-3" id="book-card">
     <img src="{{this.volumeInfo.imageLinks.thumbnail}}" alt="">
@@ -36,6 +35,7 @@
         {{#each friends}}
             <a href="/profile/{{_id}}"><img id="small-image" src="{{profileImage}}" alt=""></a>
             <a href="/profile/{{_id}}">{{username}}</a>
+            <a href="/delete/{{_id}}">remove friend</a>
         {{/each}}
     </div>
     {{!-- {{#each otherUsers}}
