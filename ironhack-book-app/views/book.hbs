@@ -1,0 +1,53 @@
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-9">
+            <div class="book-section">
+                <div><img src={{book.volumeInfo.imageLinks.thumbnail}} alt="the cover image"></div>
+                <h2>{{book.volumeInfo.title}}</h2>
+                <h5>Authors:{{book.volumeInfo.authors}}</h5>
+                <h5>Categories:{{book.volumeInfo.categories}}</h5>
+                <h5>Language:{{book.volumeInfo.language}}</h5>
+                {{#if book.volumeInfo.description}}
+                <p>Description:{{book.volumeInfo.description}}</p>
+                {{else}}
+                <p>Description:no description of the book</p>
+                <p><a href="{{book.volumeInfo.previewLink}}">See the book in Google books</a></p>
+                {{/if}}
+            </div>
+            <div class="comment-section">
+                <h5>Comments from Bookje's user:</h5>
+                {{#each comments}}
+                <div>
+                <img id="small-image" src="{{this.creator.profileImage}}" alt="">
+                {{this.creator.username}}--
+                {{this.content}}
+                {{#if this.isUser}}
+                <div>
+                    <button><a href="/search-results/comments/delete/{{this._id}}">delete</a></button>
+                </div>
+                {{/if}}
+                </div>
+                {{/each}}  
+            </div>
+            {{#if user}}
+            <form action="/comment/{{book.id}}" method="post" class="comment-form">
+            <label for="comment">Leave a comment for the book:</label>
+            <textarea cols="50" rows="4" name="content" id="comment">put your comment here</textarea>
+            <button type="submit">Save</button>
+            </form>
+            
+            <div class="add-section">
+            <h5>
+                Add the book to your favorites
+            </h5>
+            {{#if isAdded}}
+            <p>Already in the favorites</p>
+            {{/if}}
+            {{#unless isAdded}}
+            <a href="/book/{{book.id}}">Add to my favorites</a> 
+            {{/unless}}
+            {{/if}}
+            </div>
+        </div>
+    </div>
+</div>

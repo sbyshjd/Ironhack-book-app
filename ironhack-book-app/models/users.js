@@ -3,8 +3,9 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
     username:{type:String, required:true, unique:true},
     password:{type:String},
-    profileImage:{type:String},
+    profileImage:{type:String,default:'/images/default-profile-picture.png'},
     googleID:{type:String},
+    friends:[{ type: Schema.Types.ObjectId, ref: 'User' }],
     favorites:[{type:String}],
     wishList:[{type:String}],
     role: {

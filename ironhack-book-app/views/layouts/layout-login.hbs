@@ -15,35 +15,29 @@
     <header>
       <div class="logo">
         <img src="/images/Group 1.jpg" alt="">
-        <h1>Bookje</h1>
+        <h1><a href="/">Bookje</a></h1> 
       </div>
       <div class="menu"></div>
-      {{#unless isLogged}}
-        <a href="/log-in">login</a>
-        <a href="/sign-up">signup</a> 
-      {{/unless}}
-      {{#if isLogged}}
+
         <p>Hi, {{user.username}}</p>
-        <a href="">Your Page</a>
-        <a href="/log-out">log out</a> 
-      {{/if}}     
+        {{#if isADMIN}}
+        <a href="/admin">Admin Page</a>
+        {{else}}
+
+        <a href="/home">Your Page</a>
+        {{/if}}
+        <a href="/log-out">log out</a>     
       </div>
     </header>
-    <div class="search-area">
-      <div class="search-container">
-        <form action="/search-results" method="POST">
-          <div class="search-logo">
-            <img src="/images/search-icon.jpg" alt="">
+        <div class="search-area">
+          <div class="search-container">
+              <form action="/search-results" method="POST">
+                  <img id="search-logo" src="/images/search-icon.jpg" alt="">
+                  <input id="search-input" type="text" name="searchinput">
+                  <button id="search-button" type="submit">Search</button>
+              </form>
           </div>
-          <div class="search-input">
-            <input type="text" name="searchinput">
-          </div>
-          <div class="search-button">
-            <button type="submit">Search</button>
-          </div>
-        </form>
-      </div>
-    </div>
+        </div>
   </nav>
  
   {{{body}}}

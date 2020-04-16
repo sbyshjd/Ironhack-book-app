@@ -1,10 +1,9 @@
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        {{#each books}}
+        {{>bookCard}}
+        {{/each}}
+    </div>
 
-{{#each books}}
-  
-    <img src="{{volumeInfo.imageLinks.thumbnail}}" alt="">
-    {{volumeInfo.title}}
-    {{#if islogged}}<a href="/search-results/{{id}}">add book</a>{{/if}}
-   
-
-{{/each}}
+</div>
 

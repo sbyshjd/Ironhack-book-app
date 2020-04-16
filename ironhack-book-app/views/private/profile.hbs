@@ -1,0 +1,28 @@
+<div class="home-page">
+    <h3>Profile</h3>
+    <img src="{{profile.profileImage}}" alt="profile image">
+    <p>role {{profile.role}}</p>
+</div>
+<div>
+    <h3>Favorite books</h3>
+</div>
+{{!-- <div>
+    <h3>users</h3>
+    {{#each otherUsers}}
+    <a href="/user/{{this._id}}">{{this.username}}</a>
+    {{/each}}
+</div> --}}
+<div>
+    {{#if isFriend}}
+    <h3>Comments</h3>
+    {{#each comments}}
+        <h4>{{bookTitle}}</h1>
+        <p>{{content}}</p>
+    {{/each}}
+    {{/if}}
+</div>
+<div>
+    {{#unless isFriend}}
+    <a href="/add/{{profile._id}}">add as friend</a>
+    {{/unless}}
+</div>

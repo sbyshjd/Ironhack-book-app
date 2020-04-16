@@ -3,10 +3,11 @@ const Schema = mongoose.Schema;
 const reviewSchema = new Schema({
     content:{type:String},
     creator:{ type: Schema.Types.ObjectId, ref: 'User' },
-    book:String,
+    bookID:{type:String},
+    bookTitle:{type:String},
     
 },{timestamps:true});
 
-const Review = mongoose.model('User',reviewSchema);
+const Review = mongoose.model('Review',reviewSchema);
 
 module.exports = Review;

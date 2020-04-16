@@ -1,0 +1,48 @@
+<div class="home-page">
+    <h3>Profile</h3>
+    <form action="" method="POST" enctype="multipart/form-data">
+    
+    <img src={{thisUser.profileImage}} alt="your profile image">
+    <div>
+        <label>Profile Image</label>
+        <input type="file" name="photo">
+    </div>
+
+    <div>
+        <label>Username</label>
+        <input type="text" name="username" value="{{thisUser.username}}">
+    </div>
+    <div>
+        <label for="">Role</label>
+        <select name="role" id="">
+            <option value="ADMIN">ADMIN</option>
+            <option value="USER" selected = 'selected'>USER</option>
+        </select>
+    </div>
+    <p>favorites:</p>
+    {{#each books}}
+    <img src="{{this.volumeInfo.imageLinks.thumbnail}}" alt="">
+    <a href="/search-results/{{this.id}}">{{this.volumeInfo.title}}</a>
+    <button><a href="">delete</a></button>
+    {{/each}}
+
+    <p>friends:</p>
+    {{#each thisUser.friends}}
+    {{this.username}}
+    <button>delete</button>
+    {{/each}}
+    <p>comments:</p>
+    {{#each thisUser.reviews}}
+    {{this.content}}
+    <button>delete</button>
+    {{/each}} 
+    <div>
+    <a href="">Delete the profile></a>  
+    <a href="">Save the Edit</a> 
+    <a href="">Quit</a>
+    </div>
+
+    </form>
+
+
+</div>
