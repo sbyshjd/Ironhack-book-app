@@ -18,8 +18,14 @@
         <h1><a href="/">Bookje</a></h1> 
       </div>
       <div class="menu"></div>
-       <h5>Hi, {{user.username}}</h5>
+
+        <p>Hi, {{user.username}}</p>
+        {{#if isADMIN}}
+        <a href="/admin">Admin Page</a>
+        {{else}}
+
         <a href="/home">Your Page</a>
+        {{/if}}
         <a href="/log-out">log out</a>     
       </div>
     </header>

@@ -108,7 +108,8 @@ app.use('/', searchBar)
 // app.use('/user', user)
 const home = require('./routes/home');
 app.use('/',home);
-
+const admin = require('./routes/admin');
+app.use('/',admin);
 
 
 module.exports = app;
