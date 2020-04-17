@@ -43,13 +43,17 @@ router.get('/home',checkRoles(['USER','ADMIN']),(req,res,next)=> {
 router.get('/favorites/delete/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
     const bookID = req.params.id;
     User.updateOne({_id:req.user._id},{$pull:{favorites:bookID}})
-        .then(res.redirect('/home'))
+        .then(() => res.redirect('/home'))
         .catch(e => console.error(e));
 })
- 
+//GET delete one comment from my comments 
 router.get('/comments/delete/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
-    Review.deleteOne({_id:req.params.id})
-        .then(res.redirect('/home'))
+    const commentID = req.params.id
+    User.updateOne({_id:req.user._id},{$pull:{reviews:commentID}})
+        .then(()=> {
+            Review.deleteOne({_id:commentID})
+            .then(() => res.redirect('/home')) 
+        })
         .catch(e=>console.error(e));
 })
 

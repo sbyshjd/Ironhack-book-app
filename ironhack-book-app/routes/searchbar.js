@@ -66,17 +66,16 @@ searchRouter.get('/search-results/:id',(req, res, next) => {
 })
 
 //GET delete my comment and return to the search-results router 
-searchRouter.get('/search-results/comments/delete/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
-  const bookID = Review.findOne({_id:req.params.id})
-                      .then(review => review.bookID)
-  const deleteReview = Review.deleteOne({_id:req.params.id});
-  Promise.all([bookID,deleteReview])
-    .then(results => {
-      const bookID = results[0];
-      res.redirect(`/search-results/${bookID}`)
-    })
-    .catch(e=>console.error(e));
-
+searchRouter.get('/search-results/:bookID/comments/delete/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
+  const userID = req.user._id
+  const bookID = req.params.bookID;
+  User.updateOne({_id:userID},{$pull:{reviews:req.params.id}})
+      .then(() => {
+        Review.deleteOne({_id:req.params.id})
+              .then(()=> {
+                    res.redirect(`/search-results/${bookID}`)
+                    })
+         })
 })
 //GET add the book to user's favorites and redirect to the same page
 searchRouter.get('/book/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {

@@ -22,27 +22,29 @@
     <p>favorites:</p>
     {{#each books}}
     <img src="{{this.volumeInfo.imageLinks.thumbnail}}" alt="">
-    <a href="/search-results/{{this.id}}">{{this.volumeInfo.title}}</a>
-    <button><a href="">delete</a></button>
+    {{this.volumeInfo.title}}
+    <button><a href="/user/{{../thisUser._id}}/book/delete/{{this.id}}">delete</a></button>
     {{/each}}
 
     <p>friends:</p>
-    {{#each thisUser.friends}}
-    {{this.username}}
-    <button>delete</button>
+    {{#with thisUser }}
+    {{#each friends}}
+    {{username}}
+    <button><a href="/user/{{../_id}}/delete/friend/{{_id}}">delete</a></button>
     {{/each}}
+    {{/with}}
     <p>comments:</p>
-    {{#each thisUser.reviews}}
-    {{this.content}}
-    <button>delete</button>
+    {{#with thisUser}}
+    {{#each reviews}}
+    {{content}}
+    <button><a href="/user/{{../_id}}/delete/comment/{{_id}}">delete</a></button>
     {{/each}} 
+    {{/with}}
     <div>
-    <a href="">Delete the profile></a>  
+    <a href="/user/delete/{{thisUser._id}}">Delete the profile></a>  
     <a href="">Save the Edit</a> 
     <a href="">Quit</a>
     </div>
 
     </form>
-
-
 </div>
