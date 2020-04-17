@@ -2,6 +2,7 @@ const express    = require('express');
 const router     = express.Router();
 const checkRoles = require('../auth/checkroles');
 const User       = require('../models/users');
+const Review     = require('../models/review');
 const axios      = require('axios')
 
 //GET the admin main page
@@ -54,12 +55,70 @@ router.get('/user/:id',checkRoles(['ADMIN']),(req,res,next)=> {
                     Promise.all(books)
                     .then(result =>{
                         console.log(thisUser);
-                        res.render('admin/user.hbs',{user:user,layout:layout,thisUser:thisUser,books:result})
+                        res.render('admin/user.hbs',{user:user,layout:layout,thisUser:thisUser,books:result,isADMIN})
                     })     
                     })
                     .catch(e=>console.error(e));
 
 
 })
-//
+//GET delete one book from the user's model and update the model
+router.get('/user/:userID/book/delete/:id',checkRoles(['ADMIN']),(req,res,next)=> {
+  const bookID = req.params.id;
+  User.updateOne({_id:req.params.userID},{$pull:{favorites:bookID}})
+    .then(()=> {
+      res.redirect(`/user/${req.params.userID}`)
+    })
+    .catch(e=>console.error(e));
+})
+//GET delete one friend from the user's model and update the model
+router.get('/user/:userID/delete/friend/:id',checkRoles(['ADMIN']),(req,res,next)=> {
+  const friendID = req.params.id
+  User.updateOne({_id:req.params.userID},{$pull:{friends:friendID}})
+    .then(()=> {
+      res.redirect(`/user/${req.params.userID}`)
+    })
+    .catch(e=>console.error(e));
+})
+//GET delete one comments from the user's model and update the model
+router.get('/user/:userID/delete/friend/:id',checkRoles(['ADMIN']),(req,res,next)=> {
+  const commentID = req.params.id
+  User.updateOne({_id:req.params.userID},{$pull:{reviews:commentID}})
+    .then(()=> {
+      Review.deleteOne({_id:commentID})
+        .then(() => {
+        res.redirect(`/user/${req.params.userID}`)
+      })  
+    })
+    .catch(e=>console.error(e));
+})
+
+//GET delete the whole profile of the user;
+router.get('/user/delete/:id',checkRoles(['ADMIN']),(req,res,next)=> {
+  const userID = req.params.id;
+  //find this user
+  User.findOne({_id:userID})
+  .then(user => {
+    //delete all his comments
+    Review.deleteMany({_id:{$in:user.reviews}})
+    .then(() => {
+      //find his friends
+      User.updateMany({_id:{$in:user.friends}},{$pull:{friends:userID}})
+        .then(() => {
+          User.deleteOne({_id:userID})
+            .then(()=> {
+              res.redirect('/admin')
+            })
+        })
+    })
+  })
+
+    .catch(e=>console.error(e));
+
+  
+  
+  User.findOne({_id:userID})
+
+
+})
 module.exports = router;
