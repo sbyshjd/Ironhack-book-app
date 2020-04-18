@@ -11,34 +11,24 @@
 </head>
 <body>
     {{!-- Logo, login, signup and search area --}}
-  <nav>
-    <header>
-      <div class="logo">
-        <img src="/images/Group 1.jpg" alt="">
-        <h1><a href="/">Bookje</a></h1> 
-      </div>
-      <div class="menu">
-        <a href="/log-in">login</a>
-        <a href="/sign-up">signup</a>
-      {{#if isLogged}}
-        <h5>Hi, {{user.username}}</h5>
-        <a href="/my-books">Your Page</a>
-        <a href="/log-out">log out</a>
-      {{/if}}     
-      </div>
-    </header>
+  <header>
+    <div class="logo">
+      <h1><a href="/">Bookje</a></h1>
+    </div>
+    <div class="search">
+      <form action="/search-results" method="POST">
+        <input class="form-control" type="text" name="searchinput">
+        <button class="btn btn-outline-light" type="submit">Search</button>
+      </form>
+    </div>
+    <div class="menu">
+      <a href="/log-in">login</a>
+      <a href="/sign-up">signup</a> 
+    </div>  
+  </header>
+  <div class="gap">
 
-        <div class="search-area">
-          <div class="search-container">
-              <form action="/search-results" method="POST">
-                  <img id="search-logo" src="/images/search-icon.jpg" alt="">
-                  <input id="search-input" type="text" name="searchinput">
-                  <button id="search-button" type="submit">Search</button>
-              </form>
-          </div>
-        </div>
-  </nav>
- 
+  </div> 
   {{{body}}}
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>

@@ -2,8 +2,26 @@ const express = require('express');
 const router  = express.Router();
 const axios   = require('axios');
 
-/* GET home page */
+/* GET index page */
 router.get('/', (req, res, next) => {
+  //set the layout for visitor or user 
+  let user = null;
+  let layout = 'layout';
+  let isADMIN = false;
+  if(req.isAuthenticated()) {
+    layout = 'layout-login';
+    user = JSON.parse(JSON.stringify(req.user));
+    if(req.user.role === 'ADMIN') {
+      isADMIN = true;
+    }
+  }
+      res.render('../views/index.hbs',{layout:layout,user:user,isADMIN})
+})
+
+
+
+//GET the random page
+router.get('/random', (req, res, next) => {
   //set the layout for visitor or user 
   let user = null;
   let layout = 'layout';
@@ -30,9 +48,8 @@ router.get('/', (req, res, next) => {
       let randomNum = Math.floor(Math.random()*recommendationBooks.length);
       const randomBook = recommendationBooks[randomNum];
       // console.log(randomBook.volumeInfo);
-      res.render('../views/index.hbs',{layout:layout,user:user,book:randomBook.volumeInfo,isADMIN})
+      res.render('random-book.hbs',{layout:layout,user:user,book:randomBook.volumeInfo,isADMIN})
     })
   ;
 });
-
 module.exports = router;

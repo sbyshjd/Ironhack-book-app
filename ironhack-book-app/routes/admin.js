@@ -4,6 +4,7 @@ const checkRoles = require('../auth/checkroles');
 const User       = require('../models/users');
 const Review     = require('../models/review');
 const axios      = require('axios')
+const uploadCloud = require('../config/cloudinary');
 
 //GET the admin main page
 router.get('/admin',checkRoles(['ADMIN']),(req,res,next)=> {
@@ -112,13 +113,16 @@ router.get('/user/delete/:id',checkRoles(['ADMIN']),(req,res,next)=> {
         })
     })
   })
-
     .catch(e=>console.error(e));
+})
 
-  
-  
-  User.findOne({_id:userID})
-
-
+//GET update the user's profile
+router.post('/user/update/:id',checkRoles(['ADMIN']),uploadCloud.single('photo'),(req,res,next)=> {
+  const userName = req.body.username;
+  const profileImage = req.file.url;  
+  User.updateOne({_id:req.params.id},{$set: {username:userName,profileImage:profileImage}})
+      .then(()=> {
+          res.redirect('/admin')
+      })
 })
 module.exports = router;

@@ -11,14 +11,18 @@
 </head>
 <body>
     {{!-- Logo, login, signup and search area --}}
-  <nav>
-    <header>
+
+  <header>
       <div class="logo">
-        <img src="/images/Group 1.jpg" alt="">
         <h1><a href="/">Bookje</a></h1> 
       </div>
-      <div class="menu"></div>
-
+      <div class="search">
+        <form action="/search-results" method="POST">
+            <input class="form-control" type="text" name="searchinput">
+            <button class="btn btn-outline-light" type="submit">Search</button>
+        </form>
+      </div>
+      <div class="menu">
         <p>Hi, {{user.username}}</p>
         {{#if isADMIN}}
         <a href="/admin">Admin Page</a>
@@ -28,17 +32,11 @@
         {{/if}}
         <a href="/log-out">log out</a>     
       </div>
-    </header>
-        <div class="search-area">
-          <div class="search-container">
-              <form action="/search-results" method="POST">
-                  <img id="search-logo" src="/images/search-icon.jpg" alt="">
-                  <input id="search-input" type="text" name="searchinput">
-                  <button id="search-button" type="submit">Search</button>
-              </form>
-          </div>
-        </div>
-  </nav>
+  </header>
+  <div class="gap">
+
+  </div>
+
  
   {{{body}}}
 

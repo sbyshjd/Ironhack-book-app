@@ -1,6 +1,7 @@
 <div class="home-page">
     <h3>Profile</h3>
-    <form action="" method="POST" enctype="multipart/form-data">
+    <a href="/user/delete/{{thisUser._id}}">Delete the profile</a> 
+    <form action="/user/update/{{thisUser._id}}" method="POST" enctype="multipart/form-data">
     
     <img src={{thisUser.profileImage}} alt="your profile image">
     <div>
@@ -19,6 +20,10 @@
             <option value="USER" selected = 'selected'>USER</option>
         </select>
     </div>
+    <div>
+     <button type="submit">Save the Edit</button>
+    </div>
+    </form>
     <p>favorites:</p>
     {{#each books}}
     <img src="{{this.volumeInfo.imageLinks.thumbnail}}" alt="">
@@ -40,11 +45,5 @@
     <button><a href="/user/{{../_id}}/delete/comment/{{_id}}">delete</a></button>
     {{/each}} 
     {{/with}}
-    <div>
-    <a href="/user/delete/{{thisUser._id}}">Delete the profile></a>  
-    <a href="">Save the Edit</a> 
-    <a href="">Quit</a>
-    </div>
-
-    </form>
+    
 </div>
