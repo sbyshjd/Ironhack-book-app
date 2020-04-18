@@ -12,27 +12,27 @@ for(i = 1 ; i < Number(pages.innerHTML) / 10 ; i++) {
 console.log(Math.ceil(Number(pages.innerHTML)/10))
 console.log(arrPages)
 
-if(arrPages.length == 0 || arrPages.length < 10){
+if(Number(pages.innerHTML) == 0 || Number(pages.innerHTML) < 10){
 container.innerHTML = ``
-} else if (arrPages.length > 10 && arrPages.length < 20) {
+} else if (Number(pages.innerHTML) > 10 && Number(pages.innerHTML) < 20) {
   container.innerHTML =
   `
   <a href="/search-results/${arrPages[0]}">${arrPages[0]}</a>
   `
-} else if (arrPages.length > 20 && arrPages.length < 30) {
+} else if (Number(pages.innerHTML) > 20 && Number(pages.innerHTML) < 30) {
   container.innerHTML =
   `
   <a href="/search-results/${arrPages[0]}">${arrPages[0]}</a>
   <a href="/search-results/${arrPages[1]}">${arrPages[1]}</a>
   `
-} else if (arrPages.length > 30 && arrPages.length < 40) {
+} else if (Number(pages.innerHTML) > 30 && Number(pages.innerHTML) < 40) {
   container.innerHTML =
   `
   <a href="/search-results/${arrPages[0]}">${arrPages[0]}</a>
   <a href="/search-results/${arrPages[1]}">${arrPages[1]}</a>
   <a href="/search-results/${arrPages[3]}">${arrPages[3]}</a>
   `
-} else if (arrPages.length > 40 && arrPages.length < 50) {
+} else if (Number(pages.innerHTML) > 40 && Number(pages.innerHTML) < 50) {
   container.innerHTML = 
   `
   <a href="/search-results/${arrPages[0]}">${arrPages[0]}</a>
@@ -40,7 +40,7 @@ container.innerHTML = ``
   <a href="/search-results/${arrPages[3]}">${arrPages[3]}</a>
   <a href="/search-results/${arrPages[4]}">${arrPages[4]}</a>
   `
-} else if (arrPages.length > 50) {
+} else if (Number(pages.innerHTML) > 50) {
   container.innerHTML =
   `<button id="start">|</button>
   <button id="back">|<|</button>
@@ -97,14 +97,42 @@ back.addEventListener('click',() => {
   four -= 1 
   pageContainer.innerHTML =
   `
-  <a href="/search-results/${arrPages[one]*10}">${arrPages[one]}</a>
-  <a href="/search-results/${arrPages[two]*10}">${arrPages[two]}</a>
-  <a href="/search-results/${arrPages[three]*10}">${arrPages[three]}</a>
-  <a href="/search-results/${arrPages[four]*10}">${arrPages[four]}</a>
+  <a href="/search-results/${arrPages[one]}">${arrPages[one]}</a>
+  <a href="/search-results/${arrPages[two]}">${arrPages[two]}</a>
+  <a href="/search-results/${arrPages[three]}">${arrPages[three]}</a>
+  <a href="/search-results/${arrPages[four]}">${arrPages[four]}</a>
   `
   }
 })
 
+end.addEventListener('click',() => {
+  const pageContainer = document.querySelector('.search-ammount .pages .page')
+  one = Math.ceil(Number(pages.innerHTML)/10) -5 
+  two = Math.ceil(Number(pages.innerHTML)/10) -4 
+  three = Math.ceil(Number(pages.innerHTML)/10) -3
+  four = Math.ceil(Number(pages.innerHTML)/10) -2 
+  pageContainer.innerHTML =
+  `
+  <a href="/search-results/${arrPages[one]}">${arrPages[one]}</a>
+  <a href="/search-results/${arrPages[two]}">${arrPages[two]}</a>
+  <a href="/search-results/${arrPages[three]}">${arrPages[three]}</a>
+  <a href="/search-results/${arrPages[four]}">${arrPages[four]}</a>
+  `
+})
 
+start.addEventListener('click',() => {
+  const pageContainer = document.querySelector('.search-ammount .pages .page')
+  one = 0
+  two = 1
+  three = 2
+  four = 3
+  pageContainer.innerHTML =
+  `
+  <a href="/search-results/${arrPages[one]}">${arrPages[one]}</a>
+  <a href="/search-results/${arrPages[two]}">${arrPages[two]}</a>
+  <a href="/search-results/${arrPages[three]}">${arrPages[three]}</a>
+  <a href="/search-results/${arrPages[four]}">${arrPages[four]}</a>
+  `
+})
 
 }, false);
