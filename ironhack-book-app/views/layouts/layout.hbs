@@ -11,24 +11,23 @@
 </head>
 <body>
     {{!-- Logo, login, signup and search area --}}
-  <header>
-    <div class="logo">
+  <header class="container-fluid">
+    <div class="row">
+      <div class="col-md-2 logo">
       <h1><a href="/">Bookje</a></h1>
-    </div>
-    <div class="search">
+      </div>
+      <div class="col-md-6 search">
       <form action="/search-results" method="POST">
         <input class="form-control" type="text" name="searchinput">
         <button class="btn btn-outline-light" type="submit">Search</button>
       </form>
-    </div>
-    <div class="menu">
-      <a href="/log-in">login</a>
-      <a href="/sign-up">signup</a> 
-    </div>  
+      </div>
+      <div class="col-md-4 menu">
+      <p><a href="/log-in">login</a></p>
+      <p><a href="/sign-up">signup</a></p> 
+      </div>
+    </div> 
   </header>
-  <div class="gap">
-
-  </div> 
   {{{body}}}
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
