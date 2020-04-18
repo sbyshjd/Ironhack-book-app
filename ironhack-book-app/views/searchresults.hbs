@@ -1,9 +1,16 @@
 <div class="container-fluid">
+
+     <div class="row justify-content-center">
+        <p>search results: {{ammountOfBooks}}</p>
+        {{#each pages}}
+        <a href="/search-results/{{this}}">{{this}}</a>
+        {{/each}}
+    </div>
+
     <div class="row justify-content-center">
         {{#each books}}
         {{>bookCard}}
         {{/each}}
     </div>
-
 </div>
 
