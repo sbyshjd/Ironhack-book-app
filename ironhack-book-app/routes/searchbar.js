@@ -4,27 +4,53 @@ const axios         = require('axios');
 const User          = require('../models/users');
 const Review        = require('../models/review');
 const checkRoles    = require('../auth/checkroles');
+let searchInput   = "";
+let ammountOfBooks ="";
+let pages = 0;
+let arrPages = [];
 
 //GET all the search-results to show on the searchresults.hbs page
 searchRouter.post('/search-results',(req, res, next) => {
+  let layout = 'layout';
+  let user = null;
+  console.log(pages)
+  if(req.isAuthenticated()) {
+    layout = 'layout-login';
+    user = JSON.parse(JSON.stringify(req.user))
+  }
+  searchInput = req.body.searchinput
+  axios.get(`https://www.googleapis.com/books/v1/volumes?q=${searchInput}&key=AIzaSyAMNHv1Hf_DoGzNa4RSTRzDJjM2QEE6uvs`)
+  .then(response => {
+    const books = response.data.items;
+    ammountOfBooks = response.data.totalItems;
+    pages = Math.ceil(ammountOfBooks / 10); // ammount of pages
+    for(i = 1 ; i < pages ; i++) {
+      arrPages.push(i)
+    }
+    res.render('searchresults', {books:books,layout:layout,user:user,ammountOfBooks:ammountOfBooks, pages:arrPages})
+    })
+  .catch(e => console.log(e))
+})
+
+//GET handle multiple search-page results
+searchRouter.get('/search-results/:page',(req, res, next) => {
+  let index = (Number(req.params.page)-1)*10;
   let layout = 'layout';
   let user = null;
   if(req.isAuthenticated()) {
     layout = 'layout-login';
     user = JSON.parse(JSON.stringify(req.user))
   }
-  const searchInput = req.body.searchinput
-  const isLogged = req.isAuthenticated()
-  axios.get(`https://www.googleapis.com/books/v1/volumes?q=${searchInput}&key=AIzaSyAMNHv1Hf_DoGzNa4RSTRzDJjM2QEE6uvs`)
+  axios.get(`https://www.googleapis.com/books/v1/volumes?q=${searchInput}&startIndex=${index}&maxResults=10&key=AIzaSyAMNHv1Hf_DoGzNa4RSTRzDJjM2QEE6uvs`)
   .then(response => {
-    console.log(response.data.items[0])
     const books = response.data.items;
-    res.render('searchresults', {books:books,layout:layout,user:user})
+    res.render('searchresults', {books:books,layout:layout,user:user, pages:arrPages, ammountOfBooks:ammountOfBooks})
     })
   .catch(e => console.log(e))
 })
+
 //GET show the book page for each search-result
-searchRouter.get('/search-results/:id',(req, res, next) => {
+searchRouter.get('/onebook/:id',(req, res, next) => {
   let layout = 'layout';
   let user = null;
   if(req.isAuthenticated()) {
