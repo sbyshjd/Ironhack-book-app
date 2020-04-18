@@ -1,16 +1,21 @@
-<div class="container-fluid">
+<div id='log-in' class="container-fluid">
     <div class="row justify-content-center">
         <form action="/log-in" method="post" class="col-6">
             <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" class="form-control" id="username" aria-describedby="emailHelp" name="username">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" aria-describedby="emailHelp" name="username">
             </div>
             <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" name="password">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password">
             </div>
-            <button type="submit" class="btn btn-primary">Sign In</button>
-            <div><a href="/auth/google">Log in with Google</a></div>
+            <div class="submit">
+                <button type="submit" class="btn btn-primary">Sign In</button>
+            </div>
+            <div id="google-img">
+                <a href="/auth/google"><img src="images/btn_google_signin_dark_normal_web@2x.png" alt=""></a>
+            </div>
         </form>
+
     </div>
 </div>

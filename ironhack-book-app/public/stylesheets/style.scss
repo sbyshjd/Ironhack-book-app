@@ -1,11 +1,7 @@
-
 body {
   padding: 0px;
   margin: 0px;
-  background-image: url('/images/162439.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position-y: -100px;
+
   font-family: 'Roboto','nunito','Libre Baskerville', serif;
   text-decoration: none;
 }
@@ -25,18 +21,22 @@ header {
   padding: 20px;
   padding-left: 100px;
   padding-right: 100px;
-  width: 100%;
+//   width: 100%;
   background-color: rgba($color: #000000, $alpha: 0.3);
   position: fixed;
-  display: flex;
-  justify-content: space-between;
+  // display: flex;
+//   justify-content: space-between;
   align-items: center;
-  height: 70px ;
+  // height: 70px ;
   z-index: 99;
 }
 header a {
   color: white;
 }
+.logo {
+  text-align: center;
+}
+
 .search form {
   display: flex;
 }
@@ -47,31 +47,139 @@ header a {
 .btn {
   margin-left: 10px;
 }
-
-
-
+.menu {
+  display: flex;
+  justify-content: space-around;
+}
+.menu p {
+  display: flex;
+  align-items: center;
+  color: white;
+  margin: 0;
+  padding: 0;
+}
 .logo {
   font-style: bold 500;
 }
-
-
 .gap {
-  height: 100px ;
+  height: 150px ;
 }
-.home-page img {
-  width:300px;
+
+//index page
+#index {
+  background-image: url('/images/162439.jpg');
+  background-size: auto;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: white;
+  height: 100vh;
+  padding-top: 300px;
+  padding-left: 200px;
+  padding-right: 250px;
+}
+#index button {
+  margin: 0px;
+  margin-top: 20px;
+  padding: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  font-size: 1rem;
+  border-radius: 100px;
+}
+#index button a {
+  text-decoration: none;
+  color: white;
+}
+//log-in page
+#log-in {
+  height: 100vh;
+  padding-top: 200px;
+  background-image: url('/images/162439.jpg');
+  background-size: auto;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+#log-in button {
+  margin: 0px;
+}
+#log-in .submit {
+  margin-top: 30px;
+  text-align: center;
+}
+//sign-up page
+#sign-up {
+  height: 100vh;
+  padding-top: 200px;
+  background-image: url('/images/162439.jpg');
+  background-size: auto;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+#google-img {
+  margin-top: 30px;
+  text-align: center;
+}
+#google-img img {
+  height: 50px;
+}
+//random-page
+#random-page {
+  padding-top: 150px;
+  background-color: #3F729B;
 }
 
 .random {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-left: 200px;
-  margin-right: 200px;
+}
+.random h2 {
+  color: white;
+  margin-bottom: 50px;
+}
+.random h3 {
+  margin-top: 50px;
+  margin-bottom: 30px;
 }
 .random img {
   width: 200px;
 }
+.random p {
+  color: darkgray;
+  margin-top: 30px;
+}
+//home page
+#home {
+  padding: 30px;
+  padding-top: 150px;
+  background-color: #3F729B;
+}
+#home h3 {
+  color: white;
+  margin-bottom: 30px;
+}
+#home .home-page {
+  margin-bottom: 30px;
+}
+#home .home-page img {
+  width:150px;
+}
+#home .favorite-books {
+  margin-bottom: 30px;
+}
+#home #friends {
+  margin-bottom: 30px;
+}
+#home #friends a {
+  color: black
+}
+#home #find-user {
+  margin-bottom: 30px;
+}
+
+
+
+
 #book-card {
   display: flex;
   flex-direction: column;

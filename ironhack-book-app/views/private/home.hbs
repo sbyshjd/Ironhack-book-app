@@ -1,62 +1,62 @@
-<div class="home-page">
-    <h3>Hi {{user.username}}!</h3>
-    <img src={{user.profileImage}} alt="your profile image">
-    <p>Your role is: {{user.role}}</p>
-</div>
-<div>
-    <h3>Favorite books</h3>
-    <div class="container-fluid">
-    <div class="row justify-content-start">
-    {{#each books}}
-    <div class="col-md-3" id="book-card">
-    <img src="{{this.volumeInfo.imageLinks.thumbnail}}" alt="">
-    <a href="/search-results/{{this.id}}">{{this.volumeInfo.title}}</a>
-    <a href="/favorites/delete/{{this.id}}">Remove</a>
+<div id="home">
+    <h3>Your Profile:</h3>
+    <div class="home-page container-fluid">
+        <div class="row">
+            <div class="col-3">
+                <p>Your profile image:</p>
+                <img src={{user.profileImage}} alt="your profile image">
+            </div>
+            <div class="col-9">
+                <h5>Your name: {{user.username}}</h3>
+                <h5>Your role is: {{user.role}}</h5>
+                <div>
+                    <button><a href="/home/{{user._id}}">Edit my profile</a></button> 
+                    <button><a href="/password/{{user._id}}">Change my password</a></button>
+                </div>
+            </div>
+        </div>
     </div>
-    {{/each}}
-    </div>
-    </div>
-</div>
-
-
-
-<div>
-    <h3>Friends</h3>
-    <form action="/profile" method="post">
-      <input type="text" list="usernames" name="username"> 
-      <datalist id="usernames">
-        {{#each otherUsers}}
-        <option value="{{username}}">
-        {{/each}}
-      </datalist>
-      <input type="submit" value="search">
-    </form>
-    <div id="friends">
-        {{#each friends}}
-            <a href="/profile/{{_id}}"><img id="small-image" src="{{profileImage}}" alt=""></a>
-            <a href="/profile/{{_id}}">{{username}}</a>
-            <a href="/delete/{{_id}}">remove friend</a>
-        {{/each}}
-    </div>
-    {{!-- {{#each otherUsers}}
-    <a href="/friend/{{this._id}}">{{this.username}}</a>
-    {{/each}} --}}
-</div>
-
-
-
-
-<div>
-    <h3>Comments</h3>
-    {{#each comments}}
+    <h3>Favorite books:</h3>
+        <div class="favorite-books container-fluid">
+            <div class="row justify-content-start">
+            {{#each books}}
+                <div class="col-md-3" id="book-card">
+                <img src="{{this.volumeInfo.imageLinks.thumbnail}}" alt="">
+                <a href="/search-results/{{this.id}}">{{this.volumeInfo.title}}</a>
+                <button><a href="/favorites/delete/{{this.id}}">Remove</a></button>
+                </div>
+            {{/each}}
+            </div>
+        </div>
+    <h3>Friends List:</h3>
+        <div id="friends">
+            {{#each friends}}
+                <a href="/profile/{{_id}}"><img id="small-image" src="{{profileImage}}" alt=""></a>
+                <a href="/profile/{{_id}}">{{username}}</a>
+                <button><a href="/delete/{{_id}}">remove</a></button>
+            {{/each}}
+        </div>
+    <h3>Find User:</h3>
+        <form action="/profile" method="post" id="find-user">
+            <label for="">Search a user from Bookje:</label>
+            <input type="text" list="usernames" name="username"> 
+            <datalist id="usernames">
+            {{#each otherUsers}}
+            <option value="{{username}}">
+            {{/each}}
+            </datalist>
+            <input type="submit" value="search">
+        </form>
+    <h3>Comments:</h3>
     <div>
-        {{content}}
-        <p>@ for the book: <a href="/search-results/{{bookID}}">{{bookTitle}}</a></p>
-        <a href="/comments/delete/{{this._id}}">Delete</a>
+        {{#each comments}}
+        <div>
+            {{content}}
+            <p>@ for the book: <a href="/search-results/{{bookID}}">{{bookTitle}}</a></p>
+            <a href="/comments/delete/{{this._id}}">Delete</a>
+        </div>
+
+        {{/each}}
     </div>
 
-    {{/each}}
-</div>
-<div>
-    <a href="/home/{{user._id}}">Edit my profile</a> <a href="/password/{{user._id}}">Change my password</a>
 </div>
