@@ -14,7 +14,11 @@ const exphbs       = require('express-handlebars');
  
 
 mongoose
-  .connect(process.env.MONGODB, {useNewUrlParser: true})
+  .connect(process.env.MONGODB_URI, {
+    useCreateIndex: true,
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
   .then(x => {
     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
   })
@@ -89,6 +93,7 @@ app.engine('hbs', hbs.engine);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 // hbs.registerPartials(__dirname + "/views/partials");
+//public the folder to users to access
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 

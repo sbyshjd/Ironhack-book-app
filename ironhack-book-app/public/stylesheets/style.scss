@@ -1,91 +1,75 @@
+
 body {
   padding: 0px;
   margin: 0px;
+  background-image: url('/images/162439.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position-y: -100px;
+  font-family: 'Roboto','nunito','Libre Baskerville', serif;
+  text-decoration: none;
 }
-
-nav {
-  font-family: 'Libre Baskerville', serif;
+h1 {
+  font-size: 2rem;
 }
-
+h3 {
+  font-size: 1.75rem;
+}
+h5 {
+  font-size: 1.25rem;
+}
+p {
+  font-size: 1rem;
+}
 header {
+  padding: 20px;
+  padding-left: 100px;
+  padding-right: 100px;
+  width: 100%;
+  background-color: rgba($color: #000000, $alpha: 0.3);
+  position: fixed;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 18px;
+  height: 70px ;
+  z-index: 99;
 }
+header a {
+  color: white;
+}
+.search form {
+  display: flex;
+}
+.search .form-control {
+  display: inline-block;
+  background-color: none;
+}
+.btn {
+  margin-left: 10px;
+}
+
+
 
 .logo {
-  display:flex;
-  font-style: bold 700;
+  font-style: bold 500;
 }
 
-.menu {
-  display: block;
-}
 
-.menu h5 {
-  font-size: 40px;
+.gap {
+  height: 100px ;
 }
-
-.search-area {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 76px;
-  background-color: #EBB650;
-  border-top: 2px solid #a9a9a9;
-  border-bottom: 4px solid #a9a9a9;
-}
-
-.search-container {
-  background-color: white;
-  width: 80%;
-}
-
-.search-container form{
-  display: flex;
-  align-items: center;
-  border: 1px solid #848484;
-  height: 47px;
-  background-color: white;
-}
-
-#search-input {
-    border:none;
-    background-image:none;
-    background-color:transparent;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-    outline: none;
-    width:100%;
-}
-
-#search-logo {
-  padding-left: 10px;
-}
-
-#search-button{
-    border:none;
-    background-image:none; 
-    background-color:transparent;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-    padding-right: 20px;
-}
-
 .home-page img {
   width:300px;
 }
-.index {
+
+.random {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-left: 200px;
   margin-right: 200px;
 }
-.index img {
+.random img {
   width: 200px;
 }
 #book-card {
@@ -127,4 +111,30 @@ header {
 }
 .user-card img {
   width: 100px;
+}
+
+.search-ammount>*{
+  color: white;
+  margin-right: 2px;
+}
+
+.search-ammount>a{
+  margin-left: 10px;
+  padding: 3px;
+  border: 1px solid white
+}
+
+.pages {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 30px;
+  padding-bottom: 13px;
+}
+
+.page {
+  margin: 3px 10px;
+}
+.page>*{
+  margin: 0px 2px;
 }

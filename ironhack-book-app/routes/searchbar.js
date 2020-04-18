@@ -4,27 +4,55 @@ const axios         = require('axios');
 const User          = require('../models/users');
 const Review        = require('../models/review');
 const checkRoles    = require('../auth/checkroles');
+let searchInput   = "";
+let ammountOfBooks = 0;
+let pages = 0;
+let arrPages = [];
 
 //GET all the search-results to show on the searchresults.hbs page
 searchRouter.post('/search-results',(req, res, next) => {
+  let layout = 'layout';
+  let user = null;
+  pages = 0;
+  ammountOfBooks = 0;
+  arrPages = [];
+  if(req.isAuthenticated()) {
+    layout = 'layout-login';
+    user = JSON.parse(JSON.stringify(req.user))
+  }
+  searchInput = req.body.searchinput
+  axios.get(`https://www.googleapis.com/books/v1/volumes?q=${searchInput}&key=AIzaSyAMNHv1Hf_DoGzNa4RSTRzDJjM2QEE6uvs`)
+  .then(response => {
+    const books = response.data.items;
+    ammountOfBooks = response.data.totalItems;
+    pages = Math.ceil(ammountOfBooks / 10); // ammount of pages
+    for(i = 1 ; i < pages ; i++) {
+      arrPages.push(i)
+    }
+    res.render('searchresults', {books:books,layout:layout,user:user,ammountOfBooks:ammountOfBooks, pages:arrPages})
+    })
+  .catch(e => console.log(e))
+})
+
+//GET handle multiple search-page results
+searchRouter.get('/search-results/:page',(req, res, next) => {
+  let index = (Number(req.params.page)-1)*10;
   let layout = 'layout';
   let user = null;
   if(req.isAuthenticated()) {
     layout = 'layout-login';
     user = JSON.parse(JSON.stringify(req.user))
   }
-  const searchInput = req.body.searchinput
-  const isLogged = req.isAuthenticated()
-  axios.get(`https://www.googleapis.com/books/v1/volumes?q=${searchInput}&key=AIzaSyAMNHv1Hf_DoGzNa4RSTRzDJjM2QEE6uvs`)
+  axios.get(`https://www.googleapis.com/books/v1/volumes?q=${searchInput}&startIndex=${index}&maxResults=10&key=AIzaSyAMNHv1Hf_DoGzNa4RSTRzDJjM2QEE6uvs`)
   .then(response => {
-    console.log(response.data.items[0])
     const books = response.data.items;
-    res.render('searchresults', {books:books,layout:layout,user:user})
+    res.render('searchresults', {books:books,layout:layout,user:user, pages:arrPages, ammountOfBooks:ammountOfBooks})
     })
   .catch(e => console.log(e))
 })
+
 //GET show the book page for each search-result
-searchRouter.get('/search-results/:id',(req, res, next) => {
+searchRouter.get('/onebook/:id',(req, res, next) => {
   let layout = 'layout';
   let user = null;
   if(req.isAuthenticated()) {
@@ -66,17 +94,16 @@ searchRouter.get('/search-results/:id',(req, res, next) => {
 })
 
 //GET delete my comment and return to the search-results router 
-searchRouter.get('/search-results/comments/delete/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
-  const bookID = Review.findOne({_id:req.params.id})
-                      .then(review => review.bookID)
-  const deleteReview = Review.deleteOne({_id:req.params.id});
-  Promise.all([bookID,deleteReview])
-    .then(results => {
-      const bookID = results[0];
-      res.redirect(`/search-results/${bookID}`)
-    })
-    .catch(e=>console.error(e));
-
+searchRouter.get('/search-results/:bookID/comments/delete/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
+  const userID = req.user._id
+  const bookID = req.params.bookID;
+  User.updateOne({_id:userID},{$pull:{reviews:req.params.id}})
+      .then(() => {
+        Review.deleteOne({_id:req.params.id})
+              .then(()=> {
+                    res.redirect(`/search-results/${bookID}`)
+                    })
+         })
 })
 //GET add the book to user's favorites and redirect to the same page
 searchRouter.get('/book/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
