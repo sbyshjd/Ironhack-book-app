@@ -5,7 +5,7 @@ const User          = require('../models/users');
 const Review        = require('../models/review');
 const checkRoles    = require('../auth/checkroles');
 let searchInput   = "";
-let ammountOfBooks ="";
+let ammountOfBooks = 0;
 let pages = 0;
 let arrPages = [];
 
@@ -13,7 +13,9 @@ let arrPages = [];
 searchRouter.post('/search-results',(req, res, next) => {
   let layout = 'layout';
   let user = null;
-  console.log(pages)
+  pages = 0;
+  ammountOfBooks = 0;
+  arrPages = [];
   if(req.isAuthenticated()) {
     layout = 'layout-login';
     user = JSON.parse(JSON.stringify(req.user))
