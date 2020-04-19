@@ -125,4 +125,53 @@ router.post('/user/update/:id',checkRoles(['ADMIN']),uploadCloud.single('photo')
           res.redirect('/admin')
       })
 })
+
+//GET the profile edit page
+router.get('/home/:id',checkRoles(['ADMIN']),(req,res,next)=> {
+  //use the right layout
+  let userID = req.params.id;
+  let user = null;
+  let layout = 'layout';
+  let isADMIN = false;
+  if(req.isAuthenticated()) {
+    layout = 'layout-login';
+    user = JSON.parse(JSON.stringify(req.user));
+    if(req.user.role === 'ADMIN') {
+      isADMIN = true;
+    }
+  }
+  res.render('private/home-edit.hbs', {layout:layout,user:user,isADMIN})
+})
+//POST the profile info back to database
+router.post('/admin/edit/:id',checkRoles(['USER','ADMIN']),uploadCloud.single('photo'),(req,res,next)=> {
+  const userName = req.body.username;
+  const profileImage = req.file.url;  
+  User.updateOne({_id:req.params.id},{$set: {username:userName,profileImage:profileImage}})
+      .then(()=> {
+          res.redirect('/home')
+      })
+})
+
+//GET the password page
+router.get('/password/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
+  //use the right layout
+  let user = null;
+  let layout = 'layout';
+  if(req.isAuthenticated()) {
+      layout = 'layout-login';
+      user = JSON.parse(JSON.stringify(req.user))
+  }
+  res.render('../views/private/password.hbs',{layout:layout,user:user})
+})
+//POST the password info
+router.post('/password/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
+  const {password} = req.body;
+  const hashPass = bcrypt.hashSync(password,10);
+  // console.log(password);
+  User.updateOne({_id:req.params.id},{ $set: {password:hashPass}})
+      .then(()=>{
+          res.redirect('/home')
+      })   
+      .catch(e=>console.error(e)); 
+})
 module.exports = router;

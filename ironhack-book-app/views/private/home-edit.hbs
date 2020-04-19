@@ -1,5 +1,6 @@
-<h2>Edit your Profile</h2>
-<form action="/home/edit/{{user._id}}" method="post" enctype="multipart/form-data">
+<div id="home-edit">
+  <h2>Edit your Profile</h2>
+  <form action="/home/edit/{{user._id}}" method="post" enctype="multipart/form-data">
   <label>Username</label>
   <input type="text" name="username" value="{{user.username}}">
 
@@ -7,6 +8,13 @@
   <input type="file" name="photo">
 
 
-  <input type="submit" value="SAVE">
-</form>
-<button><a href="/home">quit</a></button>
+  <button class="btn btn btn-success" type="submit"> SAVE </button>
+  {{#if isADMIN}}
+  <button class="btn btn btn-warning"><a href="/admin">quit</a></button>
+  {{else}}
+  <button class="btn btn btn-warning"><a href="/home">quit</a></button>
+  {{/if}}
+  </form>
+  <p>*please upload jpg or png format</p>
+  
+</div>

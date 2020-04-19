@@ -1,9 +1,9 @@
-<div class="container-fluid">
+<div class="book container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-9">
             <div class="book-section">
                 <div><img src={{book.volumeInfo.imageLinks.thumbnail}} alt="the cover image"></div>
-                <h2>{{book.volumeInfo.title}}</h2>
+                <h3>{{book.volumeInfo.title}}</h3>
                 <h5>Authors:{{book.volumeInfo.authors}}</h5>
                 <h5>Categories:{{book.volumeInfo.categories}}</h5>
                 <h5>Language:{{book.volumeInfo.language}}</h5>
@@ -11,24 +11,26 @@
                 <p>Description:{{book.volumeInfo.description}}</p>
                 {{else}}
                 <p>Description:no description of the book</p>
-                <p><a href="{{book.volumeInfo.previewLink}}">See the book in Google books</a></p>
+                <p><a href="{{book.volumeInfo.previewLink}}" target="_blank" rel="noopener noreferrer">See the book in Google books</a></p>
                 {{/if}}
             </div>
-            <div class="comment-section">
-                <h5>Comments from Bookje's user:</h5>
-                {{#each comments}}
-                <div>
-                <img id="small-image" src="{{this.creator.profileImage}}" alt="">
-                {{this.creator.username}}--
-                {{this.content}}
-                {{#if this.isUser}}
-                <div>
-                    <button><a href="/search-results/{{../book.id}}/comments/delete/{{this._id}}">delete</a></button>
-                </div>
-                {{/if}}
-                </div>
-                {{/each}}  
-            </div>
+            <h5>Comments from Bookje's user:</h5>
+            <table class="comment-section table">
+                <tbody>
+                    {{#each comments}}
+                    <tr>
+                        <td><img src="{{this.creator.profileImage}}" alt="">{{this.creator.username}}</td>
+                        <td><p>{{this.content}}</p></td>
+                        {{#if this.isUser}}
+                        <td>
+                        <button><a href="/onebook/{{../book.id}}/comments/delete/{{this._id}}">delete</a></button>
+                        </td>
+                        {{/if}}
+                    </tr>
+                    {{/each}}
+                </tbody>
+  
+            </table>
             {{#if user}}
             <form action="/comment/{{book.id}}" method="post" class="comment-form">
             <label for="comment">Leave a comment for the book:</label>
@@ -38,7 +40,7 @@
             
             <div class="add-section">
             <h5>
-                Add the book to your favorites
+            Add the book to your favorites
             </h5>
             {{#if isAdded}}
             <p>Already in the favorites</p>
