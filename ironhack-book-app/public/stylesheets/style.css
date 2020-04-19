@@ -136,6 +136,10 @@ header a {
   color: darkgray;
   margin-top: 30px; }
 
+#search-bar {
+  padding-top: 150px;
+  color: black; }
+
 #home {
   padding: 30px;
   padding-top: 150px;
@@ -201,13 +205,13 @@ header a {
   width: 100px; }
 
 .search-ammount > * {
-  color: white;
+  color: black;
   margin-right: 2px; }
 
 .search-ammount > a {
   margin-left: 10px;
   padding: 3px;
-  border: 1px solid white; }
+  border: 1px solid black; }
 
 .pages {
   display: flex;
