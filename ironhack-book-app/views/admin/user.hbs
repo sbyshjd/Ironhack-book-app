@@ -1,14 +1,15 @@
-<div class="home-page">
-    <h3>Profile</h3>
-    <a href="/user/delete/{{thisUser._id}}">Delete the profile</a> 
-    <form action="/user/update/{{thisUser._id}}" method="POST" enctype="multipart/form-data">
-    
+<div class="profile container-fluid">
+    <div class="panel">
+        <h3>Profile</h3>
+        <button class="btn btn-danger"><a href="/user/delete/{{thisUser._id}}">Delete the profile</a></button> 
+    </div>
+
+    <form class="edit-panel" action="/user/update/{{thisUser._id}}" method="POST" enctype="multipart/form-data">    
     <img src={{thisUser.profileImage}} alt="your profile image">
     <div>
         <label>Profile Image</label>
         <input type="file" name="photo">
     </div>
-
     <div>
         <label>Username</label>
         <input type="text" name="username" value="{{thisUser.username}}">
@@ -21,29 +22,48 @@
         </select>
     </div>
     <div>
-     <button type="submit">Save the Edit</button>
+     <button class="btn btn-warning" type="submit">Save the Edit</button>
     </div>
     </form>
-    <p>favorites:</p>
+    <h3>favorites:</h3>
+    <div class="row">
     {{#each books}}
-    <img src="{{this.volumeInfo.imageLinks.thumbnail}}" alt="">
-    {{this.volumeInfo.title}}
-    <button><a href="/user/{{../thisUser._id}}/book/delete/{{this.id}}">delete</a></button>
+    <div class="books col-3">
+        <img src="{{this.volumeInfo.imageLinks.thumbnail}}" alt="">
+        {{this.volumeInfo.title}}
+        <button class="btn btn-primary"><a href="/user/{{../thisUser._id}}/book/delete/{{this.id}}">delete</a></button>
+    </div>
     {{/each}}
+    </div>
 
-    <p>friends:</p>
-    {{#with thisUser }}
-    {{#each friends}}
-    {{username}}
-    <button><a href="/user/{{../_id}}/delete/friend/{{_id}}">delete</a></button>
-    {{/each}}
-    {{/with}}
-    <p>comments:</p>
-    {{#with thisUser}}
-    {{#each reviews}}
-    {{content}}
-    <button><a href="/user/{{../_id}}/delete/comment/{{_id}}">delete</a></button>
-    {{/each}} 
-    {{/with}}
+
+    <h3>friends List:</h3>
+    <table class="table">
+        <tbody>
+            {{#with thisUser }}
+            {{#each friends}}
+            <tr>
+                <td>{{username}}</td>
+                <td><button class="btn btn-primary"><a class="text-white" href="/user/{{../_id}}/delete/friend/{{_id}}">delete</a></button></td>
+            </tr>
+            {{/each}}
+            {{/with}}
+        </tbody>
+    </table>
+
+    <h3>comments:</h3>
+    <table class="table">
+        <tbody>
+            {{#with thisUser}}
+            {{#each reviews}}
+            <tr>
+            <td>{{content}}</td>
+            <td><button class="btn btn-primary"><a class="text-white" href="/user/{{../_id}}/delete/comment/{{_id}}">delete</a></button></td>
+            </tr>
+            {{/each}} 
+            {{/with}}
+        </tbody>
+    </table>
+
     
 </div>
