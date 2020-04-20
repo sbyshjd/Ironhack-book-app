@@ -112,3 +112,29 @@ header a {
 .user-card img {
   width: 100px;
 }
+
+.search-ammount>*{
+  color: white;
+  margin-right: 2px;
+}
+
+.search-ammount>a{
+  margin-left: 10px;
+  padding: 3px;
+  border: 1px solid white
+}
+
+.pages {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 30px;
+  padding-bottom: 13px;
+}
+
+.page {
+  margin: 3px 10px;
+}
+.page>*{
+  margin: 0px 2px;
+}
