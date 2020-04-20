@@ -12,30 +12,29 @@
 <body>
     {{!-- Logo, login, signup and search area --}}
 
-  <header>
-      <div class="logo">
+  <header class="container-fluid">
+    <div class="row">
+      <div class="col-md-2 logo">
         <h1><a href="/">Bookje</a></h1> 
       </div>
-      <div class="search">
+      <div class="col-md-6 search">
         <form action="/search-results" method="POST">
             <input class="form-control" type="text" name="searchinput">
             <button class="btn btn-outline-light" type="submit">Search</button>
         </form>
       </div>
-      <div class="menu">
+      <div class="col-md-4 menu">
         <p>Hi, {{user.username}}</p>
         {{#if isADMIN}}
-        <a href="/admin">Admin Page</a>
+        <p><a href="/admin">Admin Page</a></p>
         {{else}}
-
-        <a href="/home">Your Page</a>
+        <p><a href="/home">Your Page</a></p>
         {{/if}}
-        <a href="/log-out">log out</a>     
+        <p><a href="/log-out">log out</a></p>     
       </div>
+    </div>
   </header>
-  <div class="gap">
 
-  </div>
 
  
   {{{body}}}

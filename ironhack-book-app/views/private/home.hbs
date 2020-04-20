@@ -1,62 +1,73 @@
-<div class="home-page">
-    <h3>Hi {{user.username}}!</h3>
-    <img src={{user.profileImage}} alt="your profile image">
-    <p>Your role is: {{user.role}}</p>
-</div>
-<div>
-    <h3>Favorite books</h3>
-    <div class="container-fluid">
-    <div class="row justify-content-start">
-    {{#each books}}
-    <div class="col-md-3" id="book-card">
-    <img src="{{this.volumeInfo.imageLinks.thumbnail}}" alt="">
-    <a href="/search-results/{{this.id}}">{{this.volumeInfo.title}}</a>
-    <a href="/favorites/delete/{{this.id}}">Remove</a>
+<div class="home">
+    <h5>Your Profile:</h5>
+    <div class="home-page container-fluid shadow-lg rounded-lg">
+        <div class="row">
+            <div class="col-sm-5">
+                <img src={{user.profileImage}} alt="your profile image">
+            </div>
+            <div class="info-panel col-sm-7">
+                <p>Your name: {{user.username}}</p>
+                <p>Your role is: {{user.role}}</p>
+                <div>
+                    <button class="btn btn-primary"><a href="/home/{{user._id}}">Edit my profile</a></button> 
+                    <button class="btn btn-primary"><a href="/password/{{user._id}}">Change my password</a></button>
+                </div>
+            </div>
+        </div>
     </div>
-    {{/each}}
-    </div>
-    </div>
-</div>
-
-
-
-<div>
-    <h3>Friends</h3>
-    <form action="/profile" method="post">
-      <input type="text" list="usernames" name="username"> 
-      <datalist id="usernames">
-        {{#each otherUsers}}
-        <option value="{{username}}">
+    <h5>Favorite books:</h5>
+        <div class="favorite-books container-fluid">
+            <div class="row justify-content-start">
+            {{#each books}}
+                <div class="book-card col-md-3 rounded-lg shadow border">
+                <img src="{{this.volumeInfo.imageLinks.thumbnail}}" alt="">
+                <a href="/onebook/{{this.id}}">{{this.volumeInfo.title}}</a>
+                <button class="btn btn-danger"><a href="/favorites/delete/{{this.id}}">Remove</a></button>
+                </div>
+            {{/each}}
+            </div>
+        </div>
+    <h5>Friends List:</h5>
+        <table class="friends table">
+            <tbody>
+            {{#each friends}}
+                <tr>
+                <td><a href="/profile/{{_id}}"><img src="{{profileImage}}" alt=""></a></td>
+                <td><a href="/profile/{{_id}}">{{username}}</a></td>
+                <td><button class="btn btn-danger"><a href="/delete/{{_id}}">remove</a></button></td>
+                </tr>
+            {{/each}}                
+            </tbody>
+        </table>
+    <h5>Find User:</h5>
+        <form action="/profile" method="post" id="find-user">
+            <label for="">Search a user from Bookje:</label>
+            <input type="text" list="usernames" name="username"> 
+            <datalist id="usernames">
+            {{#each otherUsers}}
+            <option value="{{username}}">
+            {{/each}}
+            </datalist>
+            <input type="submit" value="search">
+        </form>
+    <h5>Comments:</h5>
+    <table class="comments table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">content</th>
+                <th scope="col">book</th>
+                <th scope="col">delete</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{#each comments}}
+        <tr>
+            <td>{{content}}</td>
+            <td><a href="/onebook/{{bookID}}">{{bookTitle}}</a></td>
+            <td><button class="btn btn-danger"><a href="/comments/delete/{{this._id}}">Delete</a></button></td>
+        </tr>
         {{/each}}
-      </datalist>
-      <input type="submit" value="search">
-    </form>
-    <div id="friends">
-        {{#each friends}}
-            <a href="/profile/{{_id}}"><img id="small-image" src="{{profileImage}}" alt=""></a>
-            <a href="/profile/{{_id}}">{{username}}</a>
-            <a href="/delete/{{_id}}">remove friend</a>
-        {{/each}}
-    </div>
-    {{!-- {{#each otherUsers}}
-    <a href="/friend/{{this._id}}">{{this.username}}</a>
-    {{/each}} --}}
-</div>
+        </tbody>
 
-
-
-
-<div>
-    <h3>Comments</h3>
-    {{#each comments}}
-    <div>
-        {{content}}
-        <p>@ for the book: <a href="/search-results/{{bookID}}">{{bookTitle}}</a></p>
-        <a href="/comments/delete/{{this._id}}">Delete</a>
-    </div>
-
-    {{/each}}
-</div>
-<div>
-    <a href="/home/{{user._id}}">Edit my profile</a> <a href="/password/{{user._id}}">Change my password</a>
+    </table>
 </div>

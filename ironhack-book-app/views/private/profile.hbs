@@ -1,28 +1,57 @@
-<div class="home-page">
-    <h3>Profile</h3>
-    <img src="{{profile.profileImage}}" alt="profile image">
-    <p>role {{profile.role}}</p>
-</div>
-<div>
-    <h3>Favorite books</h3>
-</div>
+<div class="home">
+    <h5>Profile:</h5>
+    <div class="home-page container-fluid shadow-lg rounded-lg">
+        <div class="row">
+            <div class="col-sm-5">
+                <img src={{profile.profileImage}} alt="your profile image">
+            </div>
+            <div class="info-panel col-sm-7">
+                <p>name: {{profile.username}}</p>
+                <p>role: {{profile.role}}</p>
+            </div>
+        </div>
+    </div>
+    <h5>Favorite books:</h5>
+        <div class="favorite-books container-fluid">
+            <div class="row justify-content-start">
+            {{#each books}}
+                <div class="book-card col-md-3 rounded-lg shadow border">
+                <img src="{{this.volumeInfo.imageLinks.thumbnail}}" alt="">
+                <a href="/onebook/{{this.id}}">{{this.volumeInfo.title}}</a>
+                </div>
+            {{/each}}
+            </div>
+        </div>
 {{!-- <div>
     <h3>users</h3>
     {{#each otherUsers}}
     <a href="/user/{{this._id}}">{{this.username}}</a>
     {{/each}}
 </div> --}}
-<div>
-    {{#if isFriend}}
-    <h3>Comments</h3>
-    {{#each comments}}
-        <h4>{{bookTitle}}</h1>
-        <p>{{content}}</p>
-    {{/each}}
-    {{/if}}
-</div>
+
+{{#if isFriend}}
+    <h5>Comments:</h5>
+    <table class="comments table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">content</th>
+                <th scope="col">book</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{#each comments}}
+        <tr>
+            <td>{{content}}</td>
+            <td><a href="/onebook/{{bookID}}">{{bookTitle}}</a></td>
+        </tr>
+        {{/each}}
+        </tbody>
+
+    </table>
+{{/if}}
 <div>
     {{#unless isFriend}}
-    <a href="/add/{{profile._id}}">add as friend</a>
+    <button class="btn btn-outline-primary"><a href="/add/{{profile._id}}">add as friend</a></button>
     {{/unless}}
+</div>
 </div>

@@ -94,21 +94,21 @@ searchRouter.get('/onebook/:id',(req, res, next) => {
 })
 
 //GET delete my comment and return to the search-results router 
-searchRouter.get('/search-results/:bookID/comments/delete/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
+searchRouter.get('/onebook/:bookID/comments/delete/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
   const userID = req.user._id
   const bookID = req.params.bookID;
   User.updateOne({_id:userID},{$pull:{reviews:req.params.id}})
       .then(() => {
         Review.deleteOne({_id:req.params.id})
               .then(()=> {
-                    res.redirect(`/search-results/${bookID}`)
+                    res.redirect(`/onebook/${bookID}`)
                     })
          })
 })
 //GET add the book to user's favorites and redirect to the same page
 searchRouter.get('/book/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
   User.updateOne({_id:req.user._id},{$push:{favorites:req.params.id}})
-    .then(()=> res.redirect(`/search-results/${req.params.id}`))
+    .then(()=> res.redirect(`/onebook/${req.params.id}`))
     .catch(e=>console.error(e));
 })   
 
@@ -116,7 +116,7 @@ searchRouter.get('/book/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
 searchRouter.post('/comment/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
   const {content} = req.body;
   if(!content) {
-    res.redirect(`/search-results/${req.params.id}`)
+    res.redirect(`/onebook/${req.params.id}`)
   }
   const creator = req.user._id;
   const bookID = req.params.id;
@@ -127,7 +127,7 @@ searchRouter.post('/comment/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
           .then(review => {
             User.updateOne({_id:req.user._id},{$push: {reviews:review._id}})
             .then(() => {
-              res.redirect(`/search-results/${req.params.id}`);
+              res.redirect(`/onebook/${req.params.id}`);
             })
           })
           .catch(e=>console.error(e))

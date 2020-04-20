@@ -66,10 +66,12 @@ router.post('/profile', checkRoles(['USER','ADMIN']), (req, res, next) => {
      layout = 'layout-login';
      user = JSON.parse(JSON.stringify(req.user))
     }
-    User.find({username: req.body.username})
+    User.findOne({username: req.body.username})
     .then(user => {
-        const profile = JSON.parse(JSON.stringify(user[0]))
-        res.render('private/profile', {user:user, layout:layout, profile:profile})
+        
+        // const profile = JSON.parse(JSON.stringify(user[0]))
+        // res.render('private/profile', {user:user, layout:layout, profile:profile})
+        res.redirect(`/profile/${user._id}`)
     })
     .catch(e => console.log(e))
 })
@@ -102,39 +104,62 @@ router.get('/profile/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
    User.findOne({_id:req.params.id})
     .populate('reviews')
     .then(result => {
-        const friend = JSON.parse(JSON.stringify(result));
-        const comments = JSON.parse(JSON.stringify(result.reviews));
-        console.log(comments);
-        if (req.user.friends.includes(result._id)) {
-            isFriend = true;
-        }
-        res.render('private/profile',{layout:layout, user:user, profile:friend, isFriend:isFriend, comments:comments})
+        const books = result.favorites.map(id => {
+            return axios.get(`https://www.googleapis.com/books/v1/volumes/${id}?key=AIzaSyAMNHv1Hf_DoGzNa4RSTRzDJjM2QEE6uvs`)
+           .then(book => book.data)
+           .catch(e=>console.log(e));
+       }) 
+       Promise.all(books)
+            .then(results => {
+            const friend = JSON.parse(JSON.stringify(result));
+            const comments = JSON.parse(JSON.stringify(result.reviews));
+            console.log(comments);
+             if (req.user.friends.includes(result._id)) {
+                 isFriend = true;
+                 }
+                res.render('private/profile',{layout:layout, user:user, profile:friend, isFriend:isFriend, comments:comments,books:results})
+            })        
+       }) 
+    .catch(e => console.log(e))
     })
-    .catch(e => console.log(e))    
-})
 
 
 //GET the profile edit page
 router.get('/home/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
     //use the right layout
+    let userID = req.params.id;
     let user = null;
     let layout = 'layout';
+    let isADMIN = false;
     if(req.isAuthenticated()) {
         layout = 'layout-login';
         user = JSON.parse(JSON.stringify(req.user))
+        if(req.user.role === 'ADMIN') {
+            isADMIN = true;
+          }
     }
-    
-    User.findOne({_id:req.params.id})
-        .then(user => {
-            res.render('private/home-edit.hbs', {layout:layout,user:user})
-        })
+    res.render('private/home-edit.hbs', {layout:layout,user:user,isADMIN})
 })
 //POST the profile info back to database
 router.post('/home/edit/:id',checkRoles(['USER','ADMIN']),uploadCloud.single('photo'),(req,res,next)=> {
+    let userID = req.params.id;
+    let user = null;
+    let layout = 'layout';
+    let isADMIN = false;
+    if(req.isAuthenticated()) {
+        layout = 'layout-login';
+        user = JSON.parse(JSON.stringify(req.user))
+        if(req.user.role === 'ADMIN') {
+            isADMIN = true;
+          }
+    }
     const userName = req.body.username;
     const profileImage = req.file.url;  
     User.updateOne({_id:req.params.id},{$set: {username:userName,profileImage:profileImage}})
         .then(()=> {
+            if(isADMIN) {
+               return res.redirect('/admin') 
+            }
             res.redirect('/home')
         })
 })
@@ -142,21 +167,40 @@ router.post('/home/edit/:id',checkRoles(['USER','ADMIN']),uploadCloud.single('ph
 //GET the password page
 router.get('/password/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
     //use the right layout
+    let userID = req.params.id;
     let user = null;
     let layout = 'layout';
+    let isADMIN = false;
     if(req.isAuthenticated()) {
         layout = 'layout-login';
         user = JSON.parse(JSON.stringify(req.user))
+        if(req.user.role === 'ADMIN') {
+            isADMIN = true;
+          }
     }
-    res.render('../views/private/password.hbs',{layout:layout,user:user})
+    res.render('../views/private/password.hbs',{layout:layout,user:user,isADMIN})
 })
 //POST the password info
 router.post('/password/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
+    let userID = req.params.id;
+    let user = null;
+    let layout = 'layout';
+    let isADMIN = false;
+    if(req.isAuthenticated()) {
+        layout = 'layout-login';
+        user = JSON.parse(JSON.stringify(req.user))
+        if(req.user.role === 'ADMIN') {
+            isADMIN = true;
+          }
+    }
     const {password} = req.body;
     const hashPass = bcrypt.hashSync(password,10);
     // console.log(password);
     User.updateOne({_id:req.params.id},{ $set: {password:hashPass}})
         .then(()=>{
+            if(isADMIN) {
+               return res.redirect('/admin') 
+            }
             res.redirect('/home')
         })   
         .catch(e=>console.error(e)); 
