@@ -13,12 +13,16 @@ let arrPages = [];
 searchRouter.post('/search-results',(req, res, next) => {
   let layout = 'layout';
   let user = null;
+  let isADMIN = false;
   pages = 0;
   ammountOfBooks = 0;
   arrPages = [];
   if(req.isAuthenticated()) {
     layout = 'layout-login';
     user = JSON.parse(JSON.stringify(req.user))
+    if(req.user.role === 'ADMIN') {
+      isADMIN = true;
+    }
   }
   searchInput = req.body.searchinput
   axios.get(`https://www.googleapis.com/books/v1/volumes?q=${searchInput}&key=AIzaSyAMNHv1Hf_DoGzNa4RSTRzDJjM2QEE6uvs`)
@@ -29,7 +33,7 @@ searchRouter.post('/search-results',(req, res, next) => {
     for(i = 1 ; i < pages ; i++) {
       arrPages.push(i)
     }
-    res.render('searchresults', {books:books,layout:layout,user:user,ammountOfBooks:ammountOfBooks, pages:arrPages})
+    res.render('searchresults', {books:books,layout:layout,user:user,ammountOfBooks:ammountOfBooks, pages:arrPages,isADMIN})
     })
   .catch(e => console.log(e))
 })
@@ -39,14 +43,18 @@ searchRouter.get('/search-results/:page',(req, res, next) => {
   let index = (Number(req.params.page)-1)*10;
   let layout = 'layout';
   let user = null;
+  let isADMIN = false;
   if(req.isAuthenticated()) {
     layout = 'layout-login';
     user = JSON.parse(JSON.stringify(req.user))
+    if(req.user.role === 'ADMIN') {
+      isADMIN = true;
+    }
   }
   axios.get(`https://www.googleapis.com/books/v1/volumes?q=${searchInput}&startIndex=${index}&maxResults=10&key=AIzaSyAMNHv1Hf_DoGzNa4RSTRzDJjM2QEE6uvs`)
   .then(response => {
     const books = response.data.items;
-    res.render('searchresults', {books:books,layout:layout,user:user, pages:arrPages, ammountOfBooks:ammountOfBooks})
+    res.render('searchresults', {books:books,layout:layout,user:user, pages:arrPages, ammountOfBooks:ammountOfBooks,isADMIN})
     })
   .catch(e => console.log(e))
 })
@@ -55,9 +63,13 @@ searchRouter.get('/search-results/:page',(req, res, next) => {
 searchRouter.get('/onebook/:id',(req, res, next) => {
   let layout = 'layout';
   let user = null;
+  let isADMIN = false;
   if(req.isAuthenticated()) {
     layout = 'layout-login';
     user = JSON.parse(JSON.stringify(req.user))
+    if(req.user.role === 'ADMIN') {
+      isADMIN = true;
+    }
   }
   const id = req.params.id
   const book = axios.get(`https://www.googleapis.com/books/v1/volumes/${id}?&key=AIzaSyAMNHv1Hf_DoGzNa4RSTRzDJjM2QEE6uvs`)
@@ -89,7 +101,7 @@ searchRouter.get('/onebook/:id',(req, res, next) => {
         })
       }
 
-      res.render('../views/book.hbs',{layout:layout,user:user,book:book,isAdded:isAdded,comments:comments})
+      res.render('../views/book.hbs',{layout:layout,user:user,book:book,isAdded:isAdded,comments:comments,isADMIN})
     })
 })
 

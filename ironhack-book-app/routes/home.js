@@ -13,9 +13,13 @@ router.get('/home',checkRoles(['USER','ADMIN']),(req,res,next)=> {
    //use the right layout
     let user = null;
     let layout = 'layout';
+    let isADMIN = false;
     if(req.isAuthenticated()) {
       layout = 'layout-login';
       user = JSON.parse(JSON.stringify(req.user))
+      if(req.user.role === 'ADMIN') {
+        isADMIN = true;
+      }
     }
     const friends = User.findOne({_id:req.user._id})
                     .populate('friends')
@@ -35,7 +39,7 @@ router.get('/home',checkRoles(['USER','ADMIN']),(req,res,next)=> {
             const comments = JSON.parse(JSON.stringify(results[1]));
             const others = JSON.parse(JSON.stringify(results[2]));
             results.splice(0,3);
-            res.render('private/home.hbs',{layout:layout, user:user, friends:friends, otherUsers:others, comments:comments, books:results}); // otherUsers:others
+            res.render('private/home.hbs',{layout:layout, user:user, friends:friends, otherUsers:others, comments:comments, books:results,isADMIN}); // otherUsers:others
         });
     
 })
@@ -97,10 +101,14 @@ router.get('/profile/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
    let user = null;
    let layout = 'layout';
    let isFriend = false;
+   let isADMIN = false;
    if(req.isAuthenticated()) {
      layout = 'layout-login';
-     user = JSON.parse(JSON.stringify(req.user))
-   }
+     user = JSON.parse(JSON.stringify(req.user));
+     if(req.user.role === 'ADMIN') {
+        isADMIN = true;
+      }
+    }
    User.findOne({_id:req.params.id})
     .populate('reviews')
     .then(result => {
@@ -117,7 +125,7 @@ router.get('/profile/:id',checkRoles(['USER','ADMIN']),(req,res,next)=> {
              if (req.user.friends.includes(result._id)) {
                  isFriend = true;
                  }
-                res.render('private/profile',{layout:layout, user:user, profile:friend, isFriend:isFriend, comments:comments,books:results})
+                res.render('private/profile',{layout:layout, user:user, profile:friend, isFriend:isFriend, comments:comments,books:results,isADMIN})
             })        
        }) 
     .catch(e => console.log(e))

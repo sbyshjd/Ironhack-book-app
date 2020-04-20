@@ -27,9 +27,11 @@
         <p>Hi, {{user.username}}</p>
         {{#if isADMIN}}
         <p><a href="/admin">Admin Page</a></p>
+        <p><a href="/home">Your Page</a></p>
         {{else}}
         <p><a href="/home">Your Page</a></p>
         {{/if}}
+
         <p><a href="/log-out">log out</a></p>     
       </div>
     </div>
