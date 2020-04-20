@@ -1,7 +1,7 @@
 <div class="profile container-fluid">
     <div class="panel">
         <h3>Profile</h3>
-        <button class="btn btn-danger"><a href="/user/delete/{{thisUser._id}}">Delete the profile</a></button> 
+        <button onclick="return confirm('Are you sure you want to delete this user?')" class="btn btn-danger"><a href="/user/delete/{{thisUser._id}}">Delete the profile</a></button> 
     </div>
 
     <form class="edit-panel" action="/user/update/{{thisUser._id}}" method="POST" enctype="multipart/form-data">    
